@@ -2,5 +2,6 @@
     "sketch": "Fisico.ino",
     "output": "build",
     "configuration": "cpu=atmega2560",
-    "board": "arduino:avr:mega"
+    "board": "arduino:avr:mega",
+    "port": "COM5"
 }
