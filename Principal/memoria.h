@@ -1,7 +1,13 @@
 #include <EEPROM.h>
 
+// carnet
+// 201404278
+// 201602947
+// 201900898
+// 201904042
+// 201908251
 #define CLAVE1 1
-#define CLAVE2 3
+#define CLAVE2 7
 
 // se agrega 1 al tamaño por el caracter nulo al final de los arrays
 struct usuario {
@@ -11,7 +17,7 @@ struct usuario {
 };
 
 struct evento {
-    byte identificador;
+    byte identificador[1];
     char descripcion[16];
 };
 
@@ -21,6 +27,13 @@ struct compartimiento {
 };
 
 byte numero_usuarios;
+byte numero_logs;
+
+//posicion inicial para la particion donde se almacenaran los eventos o logs
+int particion_logs = EEPROM.length()*(2/10)+1;
+
+//posicion inicial para los compartimientos
+int particion_compartimientos = EEPROM.length() - (sizeof(struct compartimiento)*9) -1;
 
 void borrarEEPROM() {
     for (int i = 0 ; i < EEPROM.length() ; i++) {
@@ -116,8 +129,6 @@ void guardarMemoriaUsuario(struct usuario nuevo_usuario) {
 //    memcpy(nuevo2.nombre, nombre_temp, 12);
 //    memcpy(nuevo2.password, pass_temp, 12);
 //    memcpy(nuevo2.phone, phone_temp, 8);
-//
-//    EEPROM.put(sizeof(struct usuario)+1, nuevo2);
 
     int encontrado = buscarUsuario(nuevo_usuario.nombre);
     Serial1.println(encontrado);
@@ -144,6 +155,29 @@ void guardarMemoriaUsuario(struct usuario nuevo_usuario) {
     EEPROM.put(0, numero_usuarios);
 }
 
-void guardarMemoriaLog() {
+// ------------------------ EVENTOS/LOGS --------------------------
+void guardarMemoriaLog(struct evento evt) {
+    encriptar(evt.identificador, 1, CLAVE1, CLAVE2);
+    encriptar(evt.descripcion, sizeof(evt.descripcion), CLAVE1, CLAVE2);
+
+    EEPROM.get(particion_logs, numero_logs);
+    if (numero_logs > 99) {
+      numero_logs = 99 - numero_logs;
+    }
     
+    EEPROM.put(particion_logs*numero_logs + 1, evt);
+
+    numero_logs++;
+    EEPROM.put(particion_logs, numero_logs);
+}
+
+struct evento buscarLog(byte identificador) {
+    struct evento log_buscar;
+    int posicion = particion_logs + 1 + (sizeof(struct evento) * identificador);
+    EEPROM.get(posicion, log_buscar);
+
+    encriptar(log_buscar.identificador, 1, CLAVE2, CLAVE1);
+    encriptar(log_buscar.descripcion, sizeof(log_buscar.descripcion), CLAVE2, CLAVE1);
+
+    return log_buscar;
 }
