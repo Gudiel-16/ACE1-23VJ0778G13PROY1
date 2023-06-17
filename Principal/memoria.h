@@ -10,6 +10,16 @@ struct usuario {
     char phone[9];
 };
 
+struct evento {
+    byte identificador;
+    char descripcion[16];
+};
+
+struct compartimiento {
+  char posicion[2];
+  char pos_memoria[3];
+};
+
 byte numero_usuarios;
 
 void borrarEEPROM() {
@@ -61,6 +71,31 @@ int buscarUsuario(char* nombre) {
       posicion_memoria += sizeof(struct usuario);
     }
     return encontrado? posicion_memoria : 0;
+}
+
+bool verificarLogin(char* nombre, char* contr) {
+    int pos_memoria = buscarUsuario(nombre);
+    if(pos_memoria = 0) {
+      Serial.println("El usuario no existe");
+      return false;
+    }
+    struct usuario actual;
+    actual = leerMemoriaUsuario(pos_memoria);
+    bool validar = false;
+    for (int i=0; i<12; i++) {
+      if(actual.password[i] == contr[i]) {
+        validar = true;
+      } else {
+        validar = false;
+        break;
+      }
+    }
+
+    if (validar) {
+      return true;
+    } else {
+      return false;
+    }
 }
 
 void guardarMemoriaUsuario(struct usuario nuevo_usuario) {
