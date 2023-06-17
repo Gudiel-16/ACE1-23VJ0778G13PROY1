@@ -10,6 +10,16 @@ struct usuario {
     char phone[9];
 };
 
+struct evento {
+    byte identificador;
+    char descripcion[16];
+}
+
+struct compartimiento {
+  char posicion[2];
+  char pos_memoria[3];
+}
+
 byte numero_usuarios;
 
 void borrarEEPROM() {
@@ -65,9 +75,9 @@ int buscarUsuario(char* nombre) {
 
 void guardarMemoriaUsuario(struct usuario nuevo_usuario) {
 
-//    char nombre_temp[12];
-//    char pass_temp[12];
-//    char phone_temp[8];
+//    char nombre_temp[13];
+//    char pass_temp[13];
+//    char phone_temp[9];
 //
 //    // llenar el array con 0
 //    memset(nombre_temp, 0, 12);
@@ -89,7 +99,7 @@ void guardarMemoriaUsuario(struct usuario nuevo_usuario) {
     if(encontrado == 0) {
       Serial1.println("No se encontro nada");
     } else {
-      Serial1.println(encontrado);
+      Serial1.println("Ocupado: Ya existe");
       return;
     }
 
