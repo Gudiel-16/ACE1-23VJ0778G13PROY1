@@ -75,8 +75,8 @@ int buscarUsuario(char* nombre) {
 
 bool verificarLogin(char* nombre, char* contr) {
     int pos_memoria = buscarUsuario(nombre);
-    if(pos_memoria = 0) {
-      Serial.println("El usuario no existe");
+    if(pos_memoria == 0) {
+      Serial1.println("El usuario no existe");
       return false;
     }
     struct usuario actual;
