@@ -1,6 +1,14 @@
 #include "LedControl.h"
 #include <LiquidCrystal.h>
 #include "panelOperacion.h"
+#include "memoria.h"
+
+// NOTAS:
+// PARA PROBAR REGISTRO Y LOGIN, importar en el .ino: 
+//    #include "loginRegistroPanel.h"
+// LLAMAR LOS METODOS y pasarles como parametro la variable 'pantalla' y 'ledControl', ej:  
+      // registroTeclado(pantalla, ledControl); 
+      // loginTeclado(pantalla, ledControl);
 
 int tamanioNombreTemp = 13; // 'n'
 int tamanioTelefonoTemp = 9; // 't'
@@ -13,6 +21,7 @@ char contra_asteriscos[13];
 
 int posicionActualCaracter = 0;
 int indiceActualIngresar = 0;
+int intentosIniciarSesion = 0;
 
 char caracteresTecladoPantalla[30] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '#', '$', '!'};
 char numerosVal[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}; // para validar contra
@@ -247,7 +256,23 @@ void loginTeclado(LiquidCrystal pantalla, LedControl ledControl){
     delay(150);
   }
 
-  // validar si existe el usuario
+  if(verificarLogin(nombre_temp, contra_temp)){
+    // SUCCESS -> MOSTRAR MENU USUARIO
+    Serial1.println("SESION INICIADA");
+  }else{
+    memset(nombre_temp, 0, tamanioNombreTemp);
+    memset(contra_temp, 0, tamanioContraTemp);   
+    memset(contra_asteriscos, 0, tamanioContraTemp);
+    indiceActualIngresar = 0;
+    intentosIniciarSesion++;
+    if(intentosIniciarSesion == 2){
+      intentosIniciarSesion = 0;
+      delay(10000); // bloquear por 10 segundos
+      // regresar a secuancia inicial
+      Serial1.println("REGRESAR A SECUENCIA INICIAL");
+    }
+    Serial1.println("USUARIO NO EXISTE");
+  }
   
   Serial1.println("END LOGIN");
 }
@@ -255,6 +280,12 @@ void loginTeclado(LiquidCrystal pantalla, LedControl ledControl){
 bool validarNombreRegistro(){
 
   // nombre unico
+  if(buscarUsuario(nombre_temp) != 0 ){
+    Serial1.println("NOMBRE USUARIO EXISTENTE");
+    memset(nombre_temp, 0, tamanioNombreTemp);
+    indiceActualIngresar = 0;
+    return false;
+  }
 
   // nombre >= 8
   if(indiceActualIngresar < 8){
@@ -342,7 +373,7 @@ void registroTeclado(LiquidCrystal pantalla, LedControl ledControl){
   memset(contra_temp, 0, tamanioContraTemp);   
   memset(contra_asteriscos, 0, tamanioContraTemp);    
   memset(telefono_temp, 0,  tamanioTelefonoTemp);  
-//  struct usuario nuevo_usuario;
+  struct usuario nuevo_usuario;
   
   while(true){ // imprimiendo en pantalla
     pantalla.clear();
@@ -451,7 +482,13 @@ void registroTeclado(LiquidCrystal pantalla, LedControl ledControl){
     }
     
     delay(150);
-  }
+  } 
+
+  memcpy(nuevo_usuario.nombre, nombre_temp, 12);
+  memcpy(nuevo_usuario.password, contra_temp, 12);
+  memcpy(nuevo_usuario.phone, telefono_temp, 8);
+
+  guardarMemoriaUsuario(nuevo_usuario);
   
   Serial1.println("END REGISTRO");
 }

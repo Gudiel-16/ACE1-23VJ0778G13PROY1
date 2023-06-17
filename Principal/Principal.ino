@@ -16,12 +16,12 @@ void inicializarMatrizDriver()
 void inicializarPinesTeclado(){
   // pines laterales del teclado del 25 al 28
   for (int j = 25; j <= 28; j++) {
-      pinMode(j, OUTPUT);
+      pinMode(j, INPUT);
   }
 
   // // pines superiores del teclado del 22 al 24
   for (int j = 22; j <= 24; j++) {
-      pinMode(j, INPUT);
+      pinMode(j, OUTPUT);
   }  
 }
 
