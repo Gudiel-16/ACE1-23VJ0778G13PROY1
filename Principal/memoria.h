@@ -41,6 +41,11 @@ void borrarEEPROM() {
     }
 }
 
+void actualizarPrimerInicio() {
+  if (EEPROM.read(0) == 255) 
+    EEPROM.write(0, 0);
+}
+
 // Encripta dos veces los datos del array
 // Desencripta si se invierten las claves
 void encriptar(char* info, int tamano_array, byte clave1, byte clave2) {
@@ -89,7 +94,7 @@ int buscarUsuario(char* nombre) {
 bool verificarLogin(char* nombre, char* contr) {
     int pos_memoria = buscarUsuario(nombre);
     if(pos_memoria = 0) {
-      Serial.println("El usuario no existe");
+      Serial1.println("El usuario no existe");
       return false;
     }
     struct usuario actual;
@@ -131,7 +136,6 @@ void guardarMemoriaUsuario(struct usuario nuevo_usuario) {
 //    memcpy(nuevo2.phone, phone_temp, 8);
 
     int encontrado = buscarUsuario(nuevo_usuario.nombre);
-    Serial1.println(encontrado);
     if(encontrado == 0) {
       Serial1.println("No se encontro nada");
     } else {
@@ -140,6 +144,7 @@ void guardarMemoriaUsuario(struct usuario nuevo_usuario) {
     }
 
     EEPROM.get(0, numero_usuarios);
+    Serial1.println(numero_usuarios);
     int siguiente_direccion = 1;
     for (int i=0; i<numero_usuarios; i++) {
         siguiente_direccion += sizeof(struct usuario);
@@ -180,4 +185,36 @@ struct evento buscarLog(byte identificador) {
     encriptar(log_buscar.descripcion, sizeof(log_buscar.descripcion), CLAVE2, CLAVE1);
 
     return log_buscar;
+}
+
+// ----------------------------- COMPARTIMIENTOS -----------------------------
+void guardarCompartimiento(struct compartimiento cmp) {
+    int p = atoi(cmp.posicion);
+  
+    encriptar(cmp.posicion, sizeof(cmp.posicion), CLAVE1, CLAVE2);
+    encriptar(cmp.pos_memoria, sizeof(cmp.pos_memoria), CLAVE1, CLAVE2);
+
+    int pos = particion_compartimientos + (p*sizeof(struct compartimiento));
+    EEPROM.put(pos, cmp);
+}
+
+struct compartimiento buscarCompartimiento(char* posicion) {
+    struct compartimiento cmp;
+    int pos = particion_compartimientos + (atoi(posicion)*sizeof(struct compartimiento));
+    EEPROM.get(pos, cmp);
+
+    encriptar(cmp.posicion, sizeof(cmp.posicion), CLAVE2, CLAVE1);
+    encriptar(cmp.pos_memoria, sizeof(cmp.pos_memoria), CLAVE2, CLAVE1);
+
+    int estado = atoi(cmp.pos_memoria);
+
+    if(estado == 0) {
+        Serial1.println("Compartimiento vacio");
+        struct compartimiento no_existe = {
+            "0",
+            "-1"
+        };
+        return no_existe;
+    }
+    return cmp;
 }
