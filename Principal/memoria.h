@@ -186,7 +186,7 @@ void guardarMemoriaLog(struct evento evt) {
 
 struct evento buscarLog(byte identificador) {
     struct evento log_buscar;
-    int posicion = particion_logs + (identificador*sizeof(struct evento)) +1;
+    int posicion = particion_logs + ((identificador-1)*sizeof(struct evento)) +1;
     EEPROM.get(posicion, log_buscar);
 
     encriptar(log_buscar.identificador, 1, CLAVE2, CLAVE1);
@@ -206,6 +206,7 @@ void guardarCompartimiento(struct compartimiento cmp) {
     EEPROM.put(pos, cmp);
 }
 
+// posicion siempre debe de un solo digito, 0-8
 struct compartimiento buscarCompartimiento(char* posicion) {
     struct compartimiento cmp;
     int pos = particion_compartimientos + (atoi(posicion)*sizeof(struct compartimiento));
@@ -225,4 +226,15 @@ struct compartimiento buscarCompartimiento(char* posicion) {
         return no_existe;
     }
     return cmp;
+}
+
+// posicion siempre debe de un solo digito, 0-8
+void vaciarCompartimiento(char* posicion) {
+    int pos = particion_compartimientos + (atoi(posicion)*sizeof(struct compartimiento));
+
+    char ceros[4] = "000";
+    struct compartimiento cmp;
+    memcpy(cmp.posicion, posicion, sizeof(posicion));
+    memcpy(cmp.pos_memoria, ceros, sizeof(ceros));
+    guardarCompartimiento(cmp);
 }
