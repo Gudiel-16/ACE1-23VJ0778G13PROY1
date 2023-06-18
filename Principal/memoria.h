@@ -23,14 +23,14 @@ struct evento {
 
 struct compartimiento {
   char posicion[2];
-  char pos_memoria[3];
+  char pos_memoria[4];
 };
 
 byte numero_usuarios;
 byte numero_logs;
 
 //posicion inicial para la particion donde se almacenaran los eventos o logs
-int particion_logs = EEPROM.length()*(2/10)+1;
+int particion_logs = (EEPROM.length() * 2 )/10 +1;
 
 //posicion inicial para los compartimientos
 int particion_compartimientos = EEPROM.length() - (sizeof(struct compartimiento)*9) -1;
@@ -42,8 +42,14 @@ void borrarEEPROM() {
 }
 
 void actualizarPrimerInicio() {
-  if (EEPROM.read(0) == 255) 
-    EEPROM.write(0, 0);
+  if (EEPROM.read(0) == 255) {
+    EEPROM.write(0, 0); 
+  }
+  if (EEPROM.read(particion_logs) == 255) {
+    EEPROM.write(particion_logs, 0);
+    Serial1.println(particion_logs);
+  Serial1.println("logs");
+  }
 }
 
 // Encripta dos veces los datos del array
@@ -169,8 +175,10 @@ void guardarMemoriaLog(struct evento evt) {
     if (numero_logs > 99) {
       numero_logs = 99 - numero_logs;
     }
+
+    int pos = particion_logs + (numero_logs*sizeof(struct evento)) +1;
     
-    EEPROM.put(particion_logs*numero_logs + 1, evt);
+    EEPROM.put(pos, evt);
 
     numero_logs++;
     EEPROM.put(particion_logs, numero_logs);
@@ -178,7 +186,7 @@ void guardarMemoriaLog(struct evento evt) {
 
 struct evento buscarLog(byte identificador) {
     struct evento log_buscar;
-    int posicion = particion_logs + 1 + (sizeof(struct evento) * identificador);
+    int posicion = particion_logs + (identificador*sizeof(struct evento)) +1;
     EEPROM.get(posicion, log_buscar);
 
     encriptar(log_buscar.identificador, 1, CLAVE2, CLAVE1);
@@ -212,7 +220,7 @@ struct compartimiento buscarCompartimiento(char* posicion) {
         Serial1.println("Compartimiento vacio");
         struct compartimiento no_existe = {
             "0",
-            "-1"
+            "-10"
         };
         return no_existe;
     }
