@@ -130,7 +130,7 @@ void mostrarDatosIntegrantes()
     varTemp = equipo[i];
 
     pintarCadenaMayorHorizontal(varTemp);
-    delay(500);
+    delay(300);
 
     varTemp = "";
     pantalla.clear();
@@ -143,79 +143,100 @@ void loop()
 {
   // ---------------------Logica correspondiente al flujo del programa
 
-  // opcion es unicamente para relleno, ni si quiera esta declarada
   switch (estadoActual)
   {
   case DATOS_INTEGRANTES:
-    mostrarDatosIntegrantes();
-    delay(1000);
+    //mostrarDatosIntegrantes();
+    delay(800);
     estadoActual = MENU_PRINCIPAL;
     pantalla.clear();
     break;
   case MENU_PRINCIPAL:
-    Serial.println("MENU_PRINCIPAL");
-
     pantalla.setCursor(0, 0);
     pantalla.print("MENU-PRINCIPAL");
 
     tecla = leerTecla();
     delay(165);
-    if (tecla == '1')
+    if (tecla == '1')             // 1 Iniciar Sesion
     { // opcion iniciar sesion
       pantalla.setCursor(0, 1);
-      pantalla.print("INIT-USER");
+      pantalla.print("INICIANDO-SESION");
       delay(500);
       estadoActual = INICIO_SESION;
       pantalla.clear();
     }
-    else if (tecla == '2')
+    else if (tecla == '2')      // 2 Registrar Usuario
     { // opcion registrar usuario
       pantalla.setCursor(0, 1);
-      pantalla.print("REGISTRO");
+      pantalla.print("ESTADO-REGISTRO");
       delay(500);
       estadoActual = REGISTRO;
       pantalla.clear();
     }
     break;
   case INICIO_SESION:
-    Serial.println("INICIO_SESION");
     pantalla.setCursor(0, 0);
-    pantalla.print("INICIANDO...");
-
-    tecla = leerTecla();
-    delay(165);
-    if (tecla == '4') //------------------------
-    {                 // opcion iniciar sesion
-      pantalla.setCursor(0, 1);
-      pantalla.print("INIT-USER");
-      delay(500);
-      estadoActual = MENU_USUARIO;
-      pantalla.clear();
-    }
-    else if (tecla == '5') //----------------
-    {                      // opcion registrar usuario
-      pantalla.setCursor(0, 1);
-      pantalla.print("INIT-ADMIN");
-      delay(500);
-      estadoActual = MENU_ADMIN;
-      pantalla.clear();
-    }
-    break;
-  case REGISTRO:
-    Serial.println("REGISTRAR");
-    pantalla.setCursor(0, 0);
-    pantalla.print("REGISTRANDO...");
+    pantalla.print("METODO-INICIO");
     pantalla.setCursor(0, 1);
-    pantalla.print("3<-REGRESAR");
+    pantalla.print("1-PANEL 2-APP");
     delay(500);
 
     tecla = leerTecla();
     delay(165);
-    if (tecla == '3')
-    { // opcion iniciar sesion
+    if (tecla == '1')       //1 INICIO SESION POR PANEL
+    { 
+      //FUNCIONALIDAD DE INICIO SESION POR PANEL ()
+      pantalla.clear();
+      pantalla.setCursor(0, 0);
+      pantalla.print("LOGINxPANEL");
+      delay(500);
+      estadoActual = MENU_USUARIO;
+      pantalla.clear();
+    } else if (tecla == '2') //2 INICIO SESION POR APP
+    { 
+      //FUNCIONALIDAD DE INICIO SESION POR APP
+      pantalla.clear();
+      pantalla.setCursor(0, 0);
+      pantalla.print("LOGINxAAP");
+      delay(500);
+      estadoActual = MENU_ADMIN;
+      pantalla.clear();
+
+    } 
+    break;
+  case REGISTRO:
+    pantalla.setCursor(0, 0);
+    pantalla.print("METODO-REGISTRO");
+    pantalla.setCursor(0, 1);
+    pantalla.print("1-PANEL 2-APP");
+    delay(500);
+
+    tecla = leerTecla();
+    delay(165);
+    if (tecla == '1')       //1 REGISTRO POR PANEL
+    { 
+      //FUNCIONALIDAD DE REGISTRO POR PANEL ()
+      pantalla.clear();
+      pantalla.setCursor(0, 0);
+      pantalla.print("RESITROxPANEL");
+      delay(500);
+      pantalla.clear();
+    } else if (tecla == '2') //2 REGISTRO POR APP
+    { 
+      //FUNCIONALIDAD DE REGISTRO POR APP
+      pantalla.clear();
+      pantalla.setCursor(0, 0);
+      pantalla.print("RESITROxAAP");
+      delay(500);
+      pantalla.clear();
+
+    } else if (tecla == '3') //3 REGRESAR
+    { 
+      //FUNCIONALIDAD DE REGRESAR
       estadoActual = MENU_PRINCIPAL;
       pantalla.clear();
     }
+    
     break;
   case MENU_USUARIO:
     Serial.println("MENU_USUARIO");
@@ -224,7 +245,7 @@ void loop()
 
     tecla = leerTecla();
     delay(165);
-    if (tecla == '6') //------------------------
+    if (tecla == '1') //------------------------1 INGRESO-CEL
     {
       pantalla.setCursor(0, 1);
       pantalla.print("INGRESO-CEL");
@@ -232,15 +253,16 @@ void loop()
       estadoActual = INGRESO_DISPOSITIVO;
       pantalla.clear();
     }
-    else if (tecla == '7')
+    else if (tecla == '2') //----------------2 RETIRO-CEL
     {
       pantalla.setCursor(0, 1);
       pantalla.print("RETIRO-CEL");
+
       delay(500);
       estadoActual = RETIRO_DISPOSITIVO;
       pantalla.clear();
     }
-    else if (tecla == '8')
+    else if (tecla == '3') //----------------3 CERRAR-SESION
     {
       pantalla.setCursor(0, 1);
       pantalla.print("CERRAR-SESION");
@@ -248,7 +270,7 @@ void loop()
       estadoActual = CERRAR_SESION;
       pantalla.clear();
     }
-    else if (tecla == '9')
+    else if (tecla == '4') //----------------4 ELIMINAR-USUARIO
     {
       pantalla.setCursor(0, 1);
       pantalla.print("DELETE-CUENTA");
@@ -258,8 +280,7 @@ void loop()
     }
 
     break;
-  case MENU_ADMIN:
-    Serial.println("MENU_ADMIN"); // tomar en cuenta que el menu de administrador no tiene opcion par cerrar sesion del ususario
+  case MENU_ADMIN: // tomar en cuenta que el menu de administrador no tiene opcion par cerrar sesion del ususario
     pantalla.setCursor(0, 0);
     pantalla.print("MENU-ADIMN");
 
