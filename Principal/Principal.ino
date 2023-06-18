@@ -1,5 +1,8 @@
 #include "LedControl.h"
 #include <LiquidCrystal.h>
+#include "loginRegistroPanel.h"
+#include "funcionalidadesUsuario.h"
+
 #define INICIALIZAR_TECLADO char tecla = ' '
 
 //-----prueba
@@ -13,6 +16,10 @@ LiquidCrystal pantalla(8, 9, 10, 11, 12, 13);
 
 int ACEPTAR = 2, CANCELAR = 3;
 String cadena = "->";
+
+// credenciales usuario activo
+char nombreUsuarioActivo[12];
+char contraUsuarioActivo[12];
 
 char teclas[4][3] = {{'1', '2', '3'},
                      {'4', '5', '6'},
@@ -81,13 +88,16 @@ void inicializarPinesTeclado()
 void setup()
 {
   Serial.begin(9600); // puerto bluetooh
-  // Serial1.begin(9600); // puerto virtual terminal
-  // Serial3.begin(9600); // puerto arduino secundario
+  Serial1.begin(9600); // puerto virtual terminal
+  Serial3.begin(9600); // puerto arduino secundario
   pantalla.begin(16, 4);
   inicializarMatrizDriver();
   inicializarPinesTeclado();
   pinMode(ACEPTAR, INPUT_PULLUP);
   pinMode(CANCELAR, INPUT_PULLUP);
+
+  actualizarPrimerInicioToLR(); // inicializa valores EEPROM
+//  registrarAdmin(); // guarda usuario admin en la EEPROM
 }
 
 INICIALIZAR_TECLADO;
@@ -142,11 +152,10 @@ void mostrarDatosIntegrantes()
 void loop()
 {
   // ---------------------Logica correspondiente al flujo del programa
-
   switch (estadoActual)
   {
   case DATOS_INTEGRANTES:
-    //mostrarDatosIntegrantes();
+    mostrarDatosIntegrantes();
     delay(800);
     estadoActual = MENU_PRINCIPAL;
     pantalla.clear();
@@ -188,9 +197,21 @@ void loop()
       //FUNCIONALIDAD DE INICIO SESION POR PANEL ()
       pantalla.clear();
       pantalla.setCursor(0, 0);
-      pantalla.print("LOGINxPANEL");
+      memset(nombreUsuarioActivo, 0, 12);
+      memset(contraUsuarioActivo, 0, 12);  
+      if(loginTeclado(pantalla, ledControl)){
+        // guardamos credenciales
+        memcpy(nombreUsuarioActivo, nombre_temp, 12);
+        memcpy(contraUsuarioActivo, contra_temp, 12);
+        if(tipoRol(nombreUsuarioActivo)){
+          estadoActual = MENU_ADMIN;
+        }else{
+          estadoActual = MENU_USUARIO;
+        }
+      }else{
+        estadoActual = DATOS_INTEGRANTES; // fallo de 2 intentos en login
+      }
       delay(500);
-      estadoActual = MENU_USUARIO;
       pantalla.clear();
     } else if (tecla == '2') //2 INICIO SESION POR APP
     { 
@@ -218,7 +239,9 @@ void loop()
       //FUNCIONALIDAD DE REGISTRO POR PANEL ()
       pantalla.clear();
       pantalla.setCursor(0, 0);
-      pantalla.print("RESITROxPANEL");
+      if(registroTeclado(pantalla, ledControl)){
+        estadoActual = MENU_PRINCIPAL;
+      }
       delay(500);
       pantalla.clear();
     } else if (tecla == '2') //2 REGISTRO POR APP

@@ -1,11 +1,11 @@
-char tecla = ' ';
+char teclaToLR = ' ';
 
-char teclas[4][3] = { { '1', '2', '3' },
+char teclasToLR[4][3] = { { '1', '2', '3' },
                       { '4', '5', '6' },
                       { '7', '8', '9' },
                       { '*', '0', '#' } };
 
-byte caracteresTecladoLed[30][8] {
+byte caracteresTecladoLedToLR[30][8] {
     {B00000000, B00111100, B01000010, B01111110, B01000010, B01000010, B01000010, B00000000}, // A
     {B00000000, B01111100, B01000010, B01111100, B01111100, B01000010, B01111100, B00000000}, // B
     {B00000000, B01111110, B01000000, B01000000, B01000000, B01000000, B01111110, B00000000}, // C
@@ -38,13 +38,13 @@ byte caracteresTecladoLed[30][8] {
     {B00000000, B00011000, B00011000, B00011000, B00011000, B00000000, B00011000, B00000000}  // !
 };
 
-char leerTecla() {
+char leerTeclaToLR() {
     for (int i = 22; i <= 24; i++) { // pines superiores
         digitalWrite(i, HIGH);
         for (int j = 25; j <= 28; j++) { // pines laterales
             if (digitalRead(j) == HIGH) {
                 digitalWrite(i, LOW);
-                return teclas[j-25][i-22];
+                return teclasToLR[j-25][i-22];
             }
         }
         digitalWrite(i, LOW);
@@ -52,10 +52,10 @@ char leerTecla() {
     return ' ';
 }
 
-void mostrarCaracter(int posicionMostrar, LedControl ledControl)
+void mostrarCaracterToLR(int posicionMostrar, LedControl ledControl)
 {
   for (int i = 0; i < 8; i++)
   {
-    ledControl.setRow(0, i, caracteresTecladoLed[posicionMostrar][i]);
+    ledControl.setRow(0, i, caracteresTecladoLedToLR[posicionMostrar][i]);
   }
 }
