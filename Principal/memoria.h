@@ -47,8 +47,6 @@ void actualizarPrimerInicio() {
   }
   if (EEPROM.read(particion_logs) == 255) {
     EEPROM.write(particion_logs, 0);
-    Serial1.println(particion_logs);
-  Serial1.println("logs");
   }
 }
 
@@ -166,15 +164,23 @@ void guardarMemoriaUsuario(struct usuario nuevo_usuario) {
     EEPROM.put(0, numero_usuarios);
 }
 
-// ------------------------ EVENTOS/LOGS --------------------------
-void guardarMemoriaLog(struct evento evt) {
-    encriptar(evt.identificador, 1, CLAVE1, CLAVE2);
-    encriptar(evt.descripcion, sizeof(evt.descripcion), CLAVE1, CLAVE2);
+void eliminarUsuario(char* nombre) {
+  
+}
 
+// ------------------------ EVENTOS/LOGS --------------------------
+void guardarMemoriaLog(char* descripcion) {
+    struct evento evt;
     EEPROM.get(particion_logs, numero_logs);
     if (numero_logs > 99) {
-      numero_logs = 99 - numero_logs;
+      numero_logs = 100 - numero_logs;
     }
+
+    evt.identificador[0] = numero_logs;
+    memcpy(evt.descripcion, descripcion, sizeof(evt.descripcion));
+    
+    encriptar(evt.identificador, 1, CLAVE1, CLAVE2);
+    encriptar(evt.descripcion, sizeof(evt.descripcion), CLAVE1, CLAVE2);
 
     int pos = particion_logs + (numero_logs*sizeof(struct evento)) +1;
     
@@ -186,13 +192,18 @@ void guardarMemoriaLog(struct evento evt) {
 
 struct evento buscarLog(byte identificador) {
     struct evento log_buscar;
-    int posicion = particion_logs + ((identificador-1)*sizeof(struct evento)) +1;
+    int posicion = particion_logs + ((identificador)*sizeof(struct evento)) +1;
     EEPROM.get(posicion, log_buscar);
 
     encriptar(log_buscar.identificador, 1, CLAVE2, CLAVE1);
     encriptar(log_buscar.descripcion, sizeof(log_buscar.descripcion), CLAVE2, CLAVE1);
 
     return log_buscar;
+}
+
+byte obtenerNumeroLogs() {
+    EEPROM.get(particion_logs, numero_logs);
+    return numero_logs;
 }
 
 // ----------------------------- COMPARTIMIENTOS -----------------------------
@@ -228,13 +239,22 @@ struct compartimiento buscarCompartimiento(char* posicion) {
     return cmp;
 }
 
-// posicion siempre debe de un solo digito, 0-8
+// posicion siempre debe de ser un solo digito 0-8
 void vaciarCompartimiento(char* posicion) {
     int pos = particion_compartimientos + (atoi(posicion)*sizeof(struct compartimiento));
 
     char ceros[4] = "000";
     struct compartimiento cmp;
-    memcpy(cmp.posicion, posicion, sizeof(posicion));
+    memcpy(cmp.posicion, posicion, sizeof(cmp.posicion));
     memcpy(cmp.pos_memoria, ceros, sizeof(ceros));
     guardarCompartimiento(cmp);
+}
+
+// ------------------------- ESTADOS DEL SISTEMA -----------------------
+void agregarEstadoSistema(byte estado) {
+  
+}
+
+void restarEstadoSistema(byte estado) {
+  
 }
