@@ -59,6 +59,7 @@ void inicializarMatrizDriver()
 void inicializarPinesTeclado()
 {
   // pines laterales del teclado del 25 al 28
+
   for (int j = 25; j <= 28; j++)
   {
     pinMode(j, INPUT);
