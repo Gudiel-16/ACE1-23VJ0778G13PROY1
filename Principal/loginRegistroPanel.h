@@ -165,7 +165,7 @@ void funcionesTecla(char teclaPresionada, LedControl ledControl, char dondeGuard
       if(posicionActualCaracter < 0){
         posicionActualCaracter = 29;
       }
-      mostrarCaracter(posicionActualCaracter, ledControl);
+      mostrarCaracterToLR(posicionActualCaracter, ledControl);
 //      Serial1.println(posicionActualCaracter);
       break;
     }
@@ -174,7 +174,7 @@ void funcionesTecla(char teclaPresionada, LedControl ledControl, char dondeGuard
       if(posicionActualCaracter > 29){
         posicionActualCaracter = 0;
       }
-      mostrarCaracter(posicionActualCaracter, ledControl);
+      mostrarCaracterToLR(posicionActualCaracter, ledControl);
 //      Serial1.println(posicionActualCaracter);
       break;
     }
@@ -184,7 +184,7 @@ void funcionesTecla(char teclaPresionada, LedControl ledControl, char dondeGuard
 void loginTeclado(LiquidCrystal pantalla, LedControl ledControl){
   indiceActualIngresar = 0;
   posicionActualCaracter = 0;
-  mostrarCaracter(posicionActualCaracter, ledControl); // para que muestre el primer caracter de una vez
+  mostrarCaracterToLR(posicionActualCaracter, ledControl); // para que muestre el primer caracter de una vez
   memset(nombre_temp, 0, tamanioNombreTemp);
   memset(contra_temp, 0, tamanioContraTemp);   
   memset(contra_asteriscos, 0, tamanioContraTemp);    
@@ -197,10 +197,10 @@ void loginTeclado(LiquidCrystal pantalla, LedControl ledControl){
     pantalla.setCursor(0, 2);
     pantalla.print(nombre_temp);
     
-    tecla = leerTecla();
-    if (tecla != ' ') {
-      Serial1.println(tecla);
-      funcionesTecla(tecla, ledControl, 'n');
+    teclaToLR = leerTeclaToLR();
+    if (teclaToLR != ' ') {
+      Serial1.println(teclaToLR);
+      funcionesTecla(teclaToLR, ledControl, 'n');
       delay(75);
     }
     
@@ -222,7 +222,7 @@ void loginTeclado(LiquidCrystal pantalla, LedControl ledControl){
 
   indiceActualIngresar = 0;
   posicionActualCaracter = 0;
-  mostrarCaracter(posicionActualCaracter, ledControl);
+  mostrarCaracterToLR(posicionActualCaracter, ledControl);
 
   while(true){ // imprimiendo en pantalla
     pantalla.clear();
@@ -232,10 +232,10 @@ void loginTeclado(LiquidCrystal pantalla, LedControl ledControl){
     pantalla.setCursor(0, 2);
     pantalla.print(contra_asteriscos);
     
-    tecla = leerTecla();
-    if (tecla != ' ') {
-      Serial1.println(tecla);
-      funcionesTecla(tecla, ledControl, 'c');
+    teclaToLR = leerTeclaToLR();
+    if (teclaToLR != ' ') {
+      Serial1.println(teclaToLR);
+      funcionesTecla(teclaToLR, ledControl, 'c');
       delay(75);
     }
     
@@ -368,7 +368,7 @@ void registroTeclado(LiquidCrystal pantalla, LedControl ledControl){
 
   indiceActualIngresar = 0;
   posicionActualCaracter = 0;
-  mostrarCaracter(posicionActualCaracter, ledControl); // para que muestre el primer caracter de una vez
+  mostrarCaracterToLR(posicionActualCaracter, ledControl); // para que muestre el primer caracter de una vez
   memset(nombre_temp, 0, tamanioNombreTemp);
   memset(contra_temp, 0, tamanioContraTemp);   
   memset(contra_asteriscos, 0, tamanioContraTemp);    
@@ -383,10 +383,10 @@ void registroTeclado(LiquidCrystal pantalla, LedControl ledControl){
     pantalla.setCursor(0, 2);
     pantalla.print(nombre_temp);
     
-    tecla = leerTecla();
-    if (tecla != ' ') {
-      Serial1.println(tecla);
-      funcionesTecla(tecla, ledControl, 'n');
+    teclaToLR = leerTeclaToLR();
+    if (teclaToLR != ' ') {
+      Serial1.println(teclaToLR);
+      funcionesTecla(teclaToLR, ledControl, 'n');
       delay(75);
     }
     
@@ -410,7 +410,7 @@ void registroTeclado(LiquidCrystal pantalla, LedControl ledControl){
 
   indiceActualIngresar = 0;
   posicionActualCaracter = 0;
-  mostrarCaracter(posicionActualCaracter, ledControl);
+  mostrarCaracterToLR(posicionActualCaracter, ledControl);
 
   while(true){ // imprimiendo en pantalla
     pantalla.clear();
@@ -420,10 +420,10 @@ void registroTeclado(LiquidCrystal pantalla, LedControl ledControl){
     pantalla.setCursor(0, 2);
     pantalla.print(telefono_temp);
     
-    tecla = leerTecla();
-    if (tecla != ' ') {
-      Serial1.println(tecla);
-      funcionesTecla(tecla, ledControl, 't');
+    teclaToLR = leerTeclaToLR();
+    if (teclaToLR != ' ') {
+      Serial1.println(teclaToLR);
+      funcionesTecla(teclaToLR, ledControl, 't');
       delay(75);
     }
     
@@ -448,7 +448,7 @@ void registroTeclado(LiquidCrystal pantalla, LedControl ledControl){
 
   indiceActualIngresar = 0;
   posicionActualCaracter = 0;
-  mostrarCaracter(posicionActualCaracter, ledControl);
+  mostrarCaracterToLR(posicionActualCaracter, ledControl);
 
   while(true){ // imprimiendo en pantalla
     pantalla.clear();
@@ -458,10 +458,10 @@ void registroTeclado(LiquidCrystal pantalla, LedControl ledControl){
     pantalla.setCursor(0, 2);
     pantalla.print(contra_asteriscos);
     
-    tecla = leerTecla();
-    if (tecla != ' ') {
-      Serial1.println(tecla);
-      funcionesTecla(tecla, ledControl, 'c');
+    teclaToLR = leerTeclaToLR();
+    if (teclaToLR != ' ') {
+      Serial1.println(teclaToLR);
+      funcionesTecla(teclaToLR, ledControl, 'c');
       delay(75);
     }
     
