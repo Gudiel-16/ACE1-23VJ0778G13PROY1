@@ -1,4 +1,4 @@
-#line 1 "C:\\Users\\ggiro\\Desktop\\ACE1-23VJ0778G13PROY1\\Fisico\\LCD.h"
+#line 1 "G:\\Archivos\\Escritorio\\Ingenieria\\Junio 2023\\Arqui 1\\ACE1-23VJ0778G13PROY1\\Fisico\\LCD.h"
 #ifndef LCD_H
 #define LCD_H
 #include <LiquidCrystal.h>

@@ -2,25 +2,25 @@
   {
     "Sourcefile": null,
     "Include": "",
-    "Includepath": "C:\\Users\\ggiro\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino"
+    "Includepath": "C:\\Users\\GustavoXD\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino"
   },
   {
     "Sourcefile": null,
     "Include": "",
-    "Includepath": "C:\\Users\\ggiro\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\mega"
+    "Includepath": "C:\\Users\\GustavoXD\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\mega"
   },
   {
-    "Sourcefile": "C:\\Users\\ggiro\\Desktop\\ACE1-23VJ0778G13PROY1\\Fisico\\build\\sketch\\Fisico.ino.cpp",
+    "Sourcefile": "G:\\Archivos\\Escritorio\\Ingenieria\\Junio 2023\\Arqui 1\\ACE1-23VJ0778G13PROY1\\Fisico\\build\\sketch\\Fisico.ino.cpp",
     "Include": "LiquidCrystal.h",
-    "Includepath": "C:\\Users\\ggiro\\Documents\\Arduino\\libraries\\LiquidCrystal\\src"
+    "Includepath": "G:\\Archivos\\Documentos\\Arduino\\libraries\\LiquidCrystal\\src"
   },
   {
-    "Sourcefile": "C:\\Users\\ggiro\\Desktop\\ACE1-23VJ0778G13PROY1\\Fisico\\build\\sketch\\Fisico.ino.cpp",
+    "Sourcefile": "G:\\Archivos\\Escritorio\\Ingenieria\\Junio 2023\\Arqui 1\\ACE1-23VJ0778G13PROY1\\Fisico\\build\\sketch\\Fisico.ino.cpp",
     "Include": "",
     "Includepath": null
   },
   {
-    "Sourcefile": "C:\\Users\\ggiro\\Documents\\Arduino\\libraries\\LiquidCrystal\\src\\LiquidCrystal.cpp",
+    "Sourcefile": "G:\\Archivos\\Documentos\\Arduino\\libraries\\LiquidCrystal\\src\\LiquidCrystal.cpp",
     "Include": "",
     "Includepath": null
   }
