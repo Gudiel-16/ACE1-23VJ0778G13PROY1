@@ -2,6 +2,12 @@
 #include <LiquidCrystal.h>
 #define INICIALIZAR_TECLADO char tecla = ' '
 
+//-----prueba
+const int NUM_INTEGRANTES = 5;
+const int CASILLAS_PANTALLA = 16;
+String varTemp = "";
+String equipo[NUM_INTEGRANTES];
+
 LedControl ledControl = LedControl(51, 53, 49, 1);
 LiquidCrystal pantalla(8, 9, 10, 11, 12, 13);
 
@@ -86,6 +92,53 @@ void setup()
 
 INICIALIZAR_TECLADO;
 
+//------------------------------------------------------------------
+
+void pintarCadenaMayorHorizontal(String cadena)
+{
+  String varMostrar = "";
+  for (int j = 0; j < cadena.length(); j++) // recorre cadena
+    {
+      char caracter = cadena.charAt(j);
+      varMostrar = varMostrar + caracter;
+
+      if (varMostrar.length() > CASILLAS_PANTALLA)
+      {
+        varMostrar = varMostrar.substring(1);
+      }
+
+      pantalla.setCursor(0, 1);
+      pantalla.print(varMostrar);
+      delay(50);
+    }
+}
+
+void mostrarDatosIntegrantes()
+{
+  // filling teamates
+  equipo[0] = "Gustavo Alejandro Giron Arriola - 201900898";
+  equipo[1] = "Cristian Aramis Lopez Bautista - 201904042";
+  equipo[2] = "Christopher Alexander Acajabon Gudiel - 201404278";
+  equipo[3] = "Erick Estuardo Muñoz Escalante - 201602947";
+  equipo[4] = "Jose Pablo Ceron Urizar - 201908251";
+
+  for (int i = 0; i < NUM_INTEGRANTES ; i++) // recorrido integrantes
+  {
+    pantalla.setCursor(0, 0);
+    pantalla.print("--INTEGRANTES--"); // tiempo en mostrar los datos de los integrantes
+
+    varTemp = equipo[i];
+
+    pintarCadenaMayorHorizontal(varTemp);
+    delay(500);
+
+    varTemp = "";
+    pantalla.clear();
+  }
+}
+
+//------------------------------------------------------------------
+
 void loop()
 {
   // ---------------------Logica correspondiente al flujo del programa
@@ -94,11 +147,7 @@ void loop()
   switch (estadoActual)
   {
   case DATOS_INTEGRANTES:
-    Serial.println("DATOS_INTEGRANTES");
-    pantalla.setCursor(0, 0);
-    pantalla.print("INTEGRANTES"); // tiempo en mostrar los datos de los integrantes
-    pantalla.setCursor(0, 1);
-    pantalla.print("INTE 1 2 3 4 5");
+    mostrarDatosIntegrantes();
     delay(1000);
     estadoActual = MENU_PRINCIPAL;
     pantalla.clear();
@@ -135,16 +184,16 @@ void loop()
 
     tecla = leerTecla();
     delay(165);
-    if (tecla == '4')//------------------------
-    { // opcion iniciar sesion
+    if (tecla == '4') //------------------------
+    {                 // opcion iniciar sesion
       pantalla.setCursor(0, 1);
       pantalla.print("INIT-USER");
       delay(500);
       estadoActual = MENU_USUARIO;
       pantalla.clear();
     }
-    else if (tecla == '5')//----------------
-    { // opcion registrar usuario
+    else if (tecla == '5') //----------------
+    {                      // opcion registrar usuario
       pantalla.setCursor(0, 1);
       pantalla.print("INIT-ADMIN");
       delay(500);
@@ -175,33 +224,39 @@ void loop()
 
     tecla = leerTecla();
     delay(165);
-    if (tecla == '6')//------------------------
-    { 
+    if (tecla == '6') //------------------------
+    {
       pantalla.setCursor(0, 1);
       pantalla.print("INGRESO-CEL");
       delay(500);
       estadoActual = INGRESO_DISPOSITIVO;
       pantalla.clear();
-    } else if (tecla == '7'){
+    }
+    else if (tecla == '7')
+    {
       pantalla.setCursor(0, 1);
       pantalla.print("RETIRO-CEL");
       delay(500);
       estadoActual = RETIRO_DISPOSITIVO;
       pantalla.clear();
-    } else if (tecla == '8'){
+    }
+    else if (tecla == '8')
+    {
       pantalla.setCursor(0, 1);
       pantalla.print("CERRAR-SESION");
       delay(500);
       estadoActual = CERRAR_SESION;
       pantalla.clear();
-    } else if (tecla == '9'){
+    }
+    else if (tecla == '9')
+    {
       pantalla.setCursor(0, 1);
       pantalla.print("DELETE-CUENTA");
       delay(500);
       estadoActual = ELMINAR_USUARIO;
       pantalla.clear();
     }
-    
+
     break;
   case MENU_ADMIN:
     Serial.println("MENU_ADMIN"); // tomar en cuenta que el menu de administrador no tiene opcion par cerrar sesion del ususario
@@ -210,20 +265,24 @@ void loop()
 
     tecla = leerTecla();
     delay(165);
-    if (tecla == '1')//------------------------
-    { 
+    if (tecla == '1') //------------------------
+    {
       pantalla.setCursor(0, 1);
       pantalla.print("LOGS-STATE");
       delay(500);
       estadoActual = VISTA_LOGS;
       pantalla.clear();
-    } else if (tecla == '2'){
+    }
+    else if (tecla == '2')
+    {
       pantalla.setCursor(0, 1);
       pantalla.print("ESTADO-SIS");
       delay(500);
       estadoActual = ESTADO_SISTEMA;
       pantalla.clear();
-    } else if (tecla == '3'){
+    }
+    else if (tecla == '3')
+    {
       pantalla.setCursor(0, 1);
       pantalla.print("CERRAR-SESION");
       delay(500);
@@ -238,8 +297,8 @@ void loop()
 
     tecla = leerTecla();
     delay(165);
-    if (tecla == '1')//------------------------
-    { 
+    if (tecla == '1') //------------------------
+    {
       pantalla.setCursor(0, 1);
       pantalla.print("INGRESADO...");
       delay(500);
@@ -254,8 +313,8 @@ void loop()
 
     tecla = leerTecla();
     delay(165);
-    if (tecla == '1')//------------------------
-    { 
+    if (tecla == '1') //------------------------
+    {
       pantalla.setCursor(0, 1);
       pantalla.print("RETIRADO...");
       delay(500);
@@ -270,8 +329,8 @@ void loop()
 
     tecla = leerTecla();
     delay(165);
-    if (tecla == '1')//------------------------
-    { 
+    if (tecla == '1') //------------------------
+    {
       pantalla.setCursor(0, 1);
       pantalla.print("CLOSE-SESION");
       delay(500);
@@ -286,8 +345,8 @@ void loop()
 
     tecla = leerTecla();
     delay(165);
-    if (tecla == '1')//------------------------
-    { 
+    if (tecla == '1') //------------------------
+    {
       pantalla.setCursor(0, 1);
       pantalla.print("ELIMINADO");
       delay(500);
@@ -302,8 +361,8 @@ void loop()
 
     tecla = leerTecla();
     delay(165);
-    if (tecla == '1')//------------------------
-    { 
+    if (tecla == '1') //------------------------
+    {
       pantalla.setCursor(0, 1);
       pantalla.print("VIENDO...");
       delay(500);
@@ -318,8 +377,8 @@ void loop()
 
     tecla = leerTecla();
     delay(165);
-    if (tecla == '1')//------------------------
-    { 
+    if (tecla == '1') //------------------------
+    {
       pantalla.setCursor(0, 1);
       pantalla.print("TESTEANDO..");
       delay(500);
