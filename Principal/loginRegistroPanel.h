@@ -181,100 +181,103 @@ void funcionesTecla(char teclaPresionada, LedControl ledControl, char dondeGuard
   }
 }
 
-void loginTeclado(LiquidCrystal pantalla, LedControl ledControl){
-  indiceActualIngresar = 0;
-  posicionActualCaracter = 0;
-  mostrarCaracterToLR(posicionActualCaracter, ledControl); // para que muestre el primer caracter de una vez
-  memset(nombre_temp, 0, tamanioNombreTemp);
-  memset(contra_temp, 0, tamanioContraTemp);   
-  memset(contra_asteriscos, 0, tamanioContraTemp);    
-  
-  while(true){ // imprimiendo en pantalla
-    pantalla.clear();
-    pantalla.print("L O G I N");
-    pantalla.setCursor(0, 1);
-    pantalla.print(" - NOMBRE:");
-    pantalla.setCursor(0, 2);
-    pantalla.print(nombre_temp);
-    
-    teclaToLR = leerTeclaToLR();
-    if (teclaToLR != ' ') {
-      Serial1.println(teclaToLR);
-      funcionesTecla(teclaToLR, ledControl, 'n');
-      delay(75);
-    }
-    
-    if(digitalRead(2) == LOW){ // ACEPTAR
-      Serial1.println("ACEPTAR");
-      delay(50);
-      break;
-    }
+bool loginTeclado(LiquidCrystal pantalla, LedControl ledControl){
 
-    if(digitalRead(3) == LOW){ // CANCELAR
-      Serial1.println("CANCELAR");
-      memset(nombre_temp, 0, tamanioNombreTemp);
-      indiceActualIngresar = 0;
-      delay(50);
-    }
-    
-    delay(150);
-  }
-
-  indiceActualIngresar = 0;
-  posicionActualCaracter = 0;
-  mostrarCaracterToLR(posicionActualCaracter, ledControl);
-
-  while(true){ // imprimiendo en pantalla
-    pantalla.clear();
-    pantalla.print("L O G I N");
-    pantalla.setCursor(0, 1);
-    pantalla.print(" - PASSWORD:");
-    pantalla.setCursor(0, 2);
-    pantalla.print(contra_asteriscos);
-    
-    teclaToLR = leerTeclaToLR();
-    if (teclaToLR != ' ') {
-      Serial1.println(teclaToLR);
-      funcionesTecla(teclaToLR, ledControl, 'c');
-      delay(75);
-    }
-    
-    if(digitalRead(2) == LOW){ // ACEPTAR
-      Serial1.println("ACEPTAR");
-      delay(50);
-      break;
-    }
-
-    if(digitalRead(3) == LOW){ // CANCELAR
-      Serial1.println("CANCELAR");
-      memset(contra_temp, 0, tamanioContraTemp);  
-      memset(contra_asteriscos, 0, tamanioContraTemp);
-      indiceActualIngresar = 0;
-      delay(50);
-    }
-    
-    delay(150);
-  }
-
-  if(verificarLogin(nombre_temp, contra_temp)){
-    // SUCCESS -> MOSTRAR MENU USUARIO
-    Serial1.println("SESION INICIADA");
-  }else{
+  while(true){
+    indiceActualIngresar = 0;
+    posicionActualCaracter = 0;
+    mostrarCaracterToLR(posicionActualCaracter, ledControl); // para que muestre el primer caracter de una vez
     memset(nombre_temp, 0, tamanioNombreTemp);
     memset(contra_temp, 0, tamanioContraTemp);   
-    memset(contra_asteriscos, 0, tamanioContraTemp);
-    indiceActualIngresar = 0;
-    intentosIniciarSesion++;
-    if(intentosIniciarSesion == 2){
-      intentosIniciarSesion = 0;
-      delay(10000); // bloquear por 10 segundos
-      // regresar a secuancia inicial
-      Serial1.println("REGRESAR A SECUENCIA INICIAL");
-    }
-    Serial1.println("USUARIO NO EXISTE");
-  }
+    memset(contra_asteriscos, 0, tamanioContraTemp);    
+    
+    while(true){ // imprimiendo en pantalla
+      pantalla.clear();
+      pantalla.print("L O G I N");
+      pantalla.setCursor(0, 1);
+      pantalla.print(" - NOMBRE:");
+      pantalla.setCursor(0, 2);
+      pantalla.print(nombre_temp);
+      
+      teclaToLR = leerTeclaToLR();
+      if (teclaToLR != ' ') {
+        Serial1.println(teclaToLR);
+        funcionesTecla(teclaToLR, ledControl, 'n');
+        delay(75);
+      }
+      
+      if(digitalRead(2) == LOW){ // ACEPTAR
+        Serial1.println("ACEPTAR");
+        delay(50);
+        break;
+      }
   
-  Serial1.println("END LOGIN");
+      if(digitalRead(3) == LOW){ // CANCELAR
+        Serial1.println("CANCELAR");
+        memset(nombre_temp, 0, tamanioNombreTemp);
+        indiceActualIngresar = 0;
+        delay(50);
+      }
+      
+      delay(150);
+    }
+  
+    indiceActualIngresar = 0;
+    posicionActualCaracter = 0;
+    mostrarCaracterToLR(posicionActualCaracter, ledControl);
+  
+    while(true){ // imprimiendo en pantalla
+      pantalla.clear();
+      pantalla.print("L O G I N");
+      pantalla.setCursor(0, 1);
+      pantalla.print(" - PASSWORD:");
+      pantalla.setCursor(0, 2);
+      pantalla.print(contra_asteriscos);
+      
+      teclaToLR = leerTeclaToLR();
+      if (teclaToLR != ' ') {
+        Serial1.println(teclaToLR);
+        funcionesTecla(teclaToLR, ledControl, 'c');
+        delay(75);
+      }
+      
+      if(digitalRead(2) == LOW){ // ACEPTAR
+        Serial1.println("ACEPTAR");
+        delay(50);
+        break;
+      }
+  
+      if(digitalRead(3) == LOW){ // CANCELAR
+        Serial1.println("CANCELAR");
+        memset(contra_temp, 0, tamanioContraTemp);  
+        memset(contra_asteriscos, 0, tamanioContraTemp);
+        indiceActualIngresar = 0;
+        delay(50);
+      }
+      
+      delay(150);
+    }
+  
+    if(verificarLogin(nombre_temp, contra_temp)){
+      Serial1.println("LOGIN CORRECTO");
+      return true;
+    }else{
+      memset(nombre_temp, 0, tamanioNombreTemp);
+      memset(contra_temp, 0, tamanioContraTemp);   
+      memset(contra_asteriscos, 0, tamanioContraTemp);
+      indiceActualIngresar = 0;
+      intentosIniciarSesion++;
+      if(intentosIniciarSesion == 2){
+        intentosIniciarSesion = 0;
+        delay(10000); // bloquear por 10 segundos -> hacia secuencia inicial
+        Serial1.println("REGRESAR A SECUENCIA INICIAL");
+        break;
+      }
+      Serial1.println("CREDENCIALES INCORRECTAS");
+    }
+  }
+
+  return false;
 }
 
 bool validarNombreRegistro(){
@@ -364,7 +367,7 @@ bool validarContraRegistro(){
   return true;
 }
 
-void registroTeclado(LiquidCrystal pantalla, LedControl ledControl){
+bool registroTeclado(LiquidCrystal pantalla, LedControl ledControl){
 
   indiceActualIngresar = 0;
   posicionActualCaracter = 0;
@@ -490,5 +493,6 @@ void registroTeclado(LiquidCrystal pantalla, LedControl ledControl){
 
   guardarMemoriaUsuario(nuevo_usuario);
   
-  Serial1.println("END REGISTRO");
+  Serial1.println("USUARIO GUARDADO");
+  return true;
 }

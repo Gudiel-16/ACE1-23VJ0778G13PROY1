@@ -358,7 +358,7 @@ void lecturaSensores(LedControl ledControl){
   updateMatrizCompartimento(respuestaSensorBoton);
   mostrarMatrizCompartimentos(ledControl);
   
-  delay(1);  
+  delay(1);
 }
 
 int buscarCompartimentoLibre(){
