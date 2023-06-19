@@ -1,6 +1,10 @@
 #include "matrizCompartimento.h"
+#include "loginRegistroPanel.h"
 
 //////////////////////////////////////////////////////////////  PANEL DE CONTROL //////////////////////////////////////////////////////////////
+
+char contra_tempoToCompartiemnto[13];
+char contra_asteriscosToCompartiemnto[13];
 
 int indiceActualIngresarToCompartimento = 0;
 int posicionActualCaracterToCompartimento = 0;
@@ -71,133 +75,73 @@ void funcionesTeclaToCompartimento(char teclaPresionada, LedControl ledControl, 
    
   switch(teclaPresionada){
     case '1': {
-      if(dondeGuardar == 'n'){
-        nombre_temp[indiceActualIngresarToCompartimento++] = '1';
-      } else if(dondeGuardar == 't'){
-        telefono_temp[indiceActualIngresarToCompartimento++] = '1';
-      } else {
-        int indiceAcutalC = indiceActualIngresarToCompartimento;
-        contra_temp[indiceAcutalC] = '1';
-        contra_asteriscos[indiceAcutalC] = '*';
-        indiceActualIngresarToCompartimento++;
-      }
+      int indiceAcutalC = indiceActualIngresarToCompartimento;
+      contra_tempoToCompartiemnto[indiceAcutalC] = '1';
+      contra_asteriscosToCompartiemnto[indiceAcutalC] = '*';
+      indiceActualIngresarToCompartimento++;    
       break;
     }
     case '2': {
-      if(dondeGuardar == 'n'){
-        nombre_temp[indiceActualIngresarToCompartimento++] = '2';
-      } else if(dondeGuardar == 't'){
-        telefono_temp[indiceActualIngresarToCompartimento++] = '2';
-      } else {
-        int indiceAcutalC = indiceActualIngresarToCompartimento;
-        contra_temp[indiceAcutalC] = '2';
-        contra_asteriscos[indiceAcutalC] = '*';
-        indiceActualIngresarToCompartimento++;
-      }
+      int indiceAcutalC = indiceActualIngresarToCompartimento;
+      contra_tempoToCompartiemnto[indiceAcutalC] = '2';
+      contra_asteriscosToCompartiemnto[indiceAcutalC] = '*';
+      indiceActualIngresarToCompartimento++;
       break;
     }
     case '3': {
-      if(dondeGuardar == 'n'){
-        nombre_temp[indiceActualIngresarToCompartimento++] = '3';
-      } else if(dondeGuardar == 't'){
-        telefono_temp[indiceActualIngresarToCompartimento++] = '3';
-      } else {
-        int indiceAcutalC = indiceActualIngresarToCompartimento;
-        contra_temp[indiceAcutalC] = '3';
-        contra_asteriscos[indiceAcutalC] = '*';
-        indiceActualIngresarToCompartimento++;
-      }
+      int indiceAcutalC = indiceActualIngresarToCompartimento;
+      contra_tempoToCompartiemnto[indiceAcutalC] = '3';
+      contra_asteriscosToCompartiemnto[indiceAcutalC] = '*';
+      indiceActualIngresarToCompartimento++;
       break;
     }
     case '4': {
-      if(dondeGuardar == 'n'){
-        nombre_temp[indiceActualIngresarToCompartimento++] = '4';
-      } else if(dondeGuardar == 't'){
-        telefono_temp[indiceActualIngresarToCompartimento++] = '4';
-      } else {
-        int indiceAcutalC = indiceActualIngresarToCompartimento;
-        contra_temp[indiceAcutalC] = '4';
-        contra_asteriscos[indiceAcutalC] = '*';
-        indiceActualIngresarToCompartimento++;
-      }
+      int indiceAcutalC = indiceActualIngresarToCompartimento;
+      contra_tempoToCompartiemnto[indiceAcutalC] = '4';
+      contra_asteriscosToCompartiemnto[indiceAcutalC] = '*';
+      indiceActualIngresarToCompartimento++;
       break;
     }
     case '5': {
-      if(dondeGuardar == 'n'){
-        nombre_temp[indiceActualIngresarToCompartimento++] = '5';
-      } else if(dondeGuardar == 't'){
-        telefono_temp[indiceActualIngresarToCompartimento++] = '5';
-      } else {
-        int indiceAcutalC = indiceActualIngresarToCompartimento;
-        contra_temp[indiceAcutalC] = '5';
-        contra_asteriscos[indiceAcutalC] = '*';
-        indiceActualIngresarToCompartimento++;
-      }
+      int indiceAcutalC = indiceActualIngresarToCompartimento;
+      contra_tempoToCompartiemnto[indiceAcutalC] = '5';
+      contra_asteriscosToCompartiemnto[indiceAcutalC] = '*';
+      indiceActualIngresarToCompartimento++;
       break;
     }
     case '6': {
-      if(dondeGuardar == 'n'){
-        nombre_temp[indiceActualIngresarToCompartimento++] = '6';
-      } else if(dondeGuardar == 't'){
-        telefono_temp[indiceActualIngresarToCompartimento++] = '6';
-      } else {
-        int indiceAcutalC = indiceActualIngresarToCompartimento;
-        contra_temp[indiceAcutalC] = '6';
-        contra_asteriscos[indiceAcutalC] = '*';
-        indiceActualIngresarToCompartimento++;
-      }
+      int indiceAcutalC = indiceActualIngresarToCompartimento;
+      contra_tempoToCompartiemnto[indiceAcutalC] = '6';
+      contra_asteriscosToCompartiemnto[indiceAcutalC] = '*';
+      indiceActualIngresarToCompartimento++;
       break;
     }
     case '7': {
-      if(dondeGuardar == 'n'){
-        nombre_temp[indiceActualIngresarToCompartimento++] = '7';
-      } else if(dondeGuardar == 't'){
-        telefono_temp[indiceActualIngresarToCompartimento++] = '7';
-      } else {
-        int indiceAcutalC = indiceActualIngresarToCompartimento;
-        contra_temp[indiceAcutalC] = '7';
-        contra_asteriscos[indiceAcutalC] = '*';
-        indiceActualIngresarToCompartimento++;
-      }
+      int indiceAcutalC = indiceActualIngresarToCompartimento;
+      contra_tempoToCompartiemnto[indiceAcutalC] = '7';
+      contra_asteriscosToCompartiemnto[indiceAcutalC] = '*';
+      indiceActualIngresarToCompartimento++;
       break;
     }
     case '8': {
-      if(dondeGuardar == 'n'){
-        nombre_temp[indiceActualIngresarToCompartimento++] = '8';
-      } else if(dondeGuardar == 't'){
-        telefono_temp[indiceActualIngresarToCompartimento++] = '8';
-      } else {
-        int indiceAcutalC = indiceActualIngresarToCompartimento;
-        contra_temp[indiceAcutalC] = '8';
-        contra_asteriscos[indiceAcutalC] = '*';
-        indiceActualIngresarToCompartimento++;
-      }
+      int indiceAcutalC = indiceActualIngresarToCompartimento;
+      contra_tempoToCompartiemnto[indiceAcutalC] = '8';
+      contra_asteriscosToCompartiemnto[indiceAcutalC] = '*';
+      indiceActualIngresarToCompartimento++;
       break;
     }
     case '9': {
-      if(dondeGuardar == 'n'){
-        nombre_temp[indiceActualIngresarToCompartimento++] = '9';
-      } else if(dondeGuardar == 't'){
-        telefono_temp[indiceActualIngresarToCompartimento++] = '9';
-      } else {
-        int indiceAcutalC = indiceActualIngresarToCompartimento;
-        contra_temp[indiceAcutalC] = '9';
-        contra_asteriscos[indiceAcutalC] = '*';
-        indiceActualIngresarToCompartimento++;
-      }
+      int indiceAcutalC = indiceActualIngresarToCompartimento;
+      contra_tempoToCompartiemnto[indiceAcutalC] = '9';
+      contra_asteriscosToCompartiemnto[indiceAcutalC] = '*';
+      indiceActualIngresarToCompartimento++;
       break;
     }
     case '0': {
-      if(dondeGuardar == 'n'){
-        nombre_temp[indiceActualIngresarToCompartimento++] = caracteresTecladoPantalla[posicionActualCaracterToCompartimento];
-      } else if(dondeGuardar == 't'){
-        telefono_temp[indiceActualIngresarToCompartimento++] = caracteresTecladoPantalla[posicionActualCaracterToCompartimento];
-      } else {
-        int indiceAcutalC = indiceActualIngresarToCompartimento;
-        contra_temp[indiceAcutalC] = caracteresTecladoPantalla[posicionActualCaracterToCompartimento];
-        contra_asteriscos[indiceAcutalC] = '*';
-        indiceActualIngresarToCompartimento++;
-      }
+      int indiceAcutalC = indiceActualIngresarToCompartimento;
+      contra_tempoToCompartiemnto[indiceAcutalC] = caracteresTecladoPantalla[posicionActualCaracterToCompartimento];
+      contra_asteriscosToCompartiemnto[indiceAcutalC] = '*';
+      indiceActualIngresarToCompartimento++;
       break;
     }
     case '*': {
@@ -237,9 +181,6 @@ int sensorTemperatura6 = 0;
 int sensorTemperatura7 = 0;
 int sensorTemperatura8 = 0;
 int sensorTemperatura9 = 0;
-
-char contra_tempoToCompartiemnto[13];
-char contra_asteriscosToCompartiemnto[13];
 
 void updateLecturaSensorTemperatura(char numeroSensor, int temperatura){
   switch(numeroSensor){
@@ -378,6 +319,13 @@ bool verificarEstadoCompartimentoIngresado(int comp){
   return false;
 }
 
+bool verificarEstadoCompartimentoRetirado(int comp){
+  if(respuestaSensorBoton[comp-1] == '0'){ // compartimento libre
+    return true;
+  }
+  return false;
+}
+
 int temperaturaAcutalCompartimento(int comp){
   int valorARetornar = 0;
   switch(comp){
@@ -422,7 +370,23 @@ int temperaturaAcutalCompartimento(int comp){
   return valorARetornar;
 }
 
-void ingresarCelular(LiquidCrystal pantalla, LedControl ledControl){
+bool verificarContratoLR(char contraIngresada[13], char contraUsuarioActivo[12]){
+  String passIngresada = "";
+  String passUsuario = "";
+  
+  for(int i = 0; i < 12; i++){
+    passIngresada.concat(contraIngresada[i]);
+    passUsuario.concat(contraUsuarioActivo[i]);
+  }
+
+  if(passIngresada.equals(passUsuario)){
+    return true;
+  }
+
+  return false;
+}
+
+bool ingresarCelular(LiquidCrystal pantalla, LedControl ledControl, char nombreUsuarioActivo[12], char contraUsuarioActivo[12]){
 
   lecturaSensores(ledControl);
   
@@ -432,7 +396,8 @@ void ingresarCelular(LiquidCrystal pantalla, LedControl ledControl){
     pantalla.print("INGRESO CEL");
     pantalla.setCursor(0, 1);
     pantalla.print(" - Lleno :c ");
-    return;
+    delay(250);
+    return true;
   }
 
   while(true){
@@ -477,30 +442,87 @@ void ingresarCelular(LiquidCrystal pantalla, LedControl ledControl){
     pantalla.print(contra_asteriscosToCompartiemnto);
     
     teclaToCompartimento = leerTeclaToCompartimento();
-    if (teclaToLR != ' ') {
-      Serial1.println(teclaToLR);
-      funcionesTeclaToCompartimento(teclaToLR, ledControl, 'c');
+    if (teclaToCompartimento != ' ') {
+      Serial1.println(teclaToCompartimento);
+      funcionesTeclaToCompartimento(teclaToCompartimento, ledControl, 'c');
       delay(75);
     }
     
     if(digitalRead(2) == LOW){ // ACEPTAR
-//      if(verificarLogin(nombre_temp, contra_temp)){
-//        // SUCCESS -> GUARDAR EN MEMORIA -> compartimentoLibre
-//        Serial1.println("CELULAR GUARDADO");
-//      }else{
-//        memset(, 0, tamanioNombreTemp);
-//        memset(contra_tempoToCompartiemnto, 0, 13);   
-//        memset(contra_asteriscosToCompartiemnto, 0, 13);
-//        indiceActualIngresarToCompartimento = 0;
-//        intentosPassword++;
-//        if(intentosPassword == 2){
-//          intentosPassword = 0;
-//          delay(10000); // bloquear por 10 segundos
-//          // regresar a secuancia inicial
-//          Serial1.println("REGRESAR A SECUENCIA INICIAL");
-//        }
-//        Serial1.println("USUARIO NO EXISTE");
-//      }
+      if(verificarContratoLR(contra_tempoToCompartiemnto, contraUsuarioActivo)){
+        // SUCCESS
+        struct compartimiento nuevoCompartimento;
+        int posCompartToLR = compartimentoLibre - 1;
+        int posMemoriaToLR = buscarUsuario(nombreUsuarioActivo);        
+        char posC[2];
+        char posM[4];
+        itoa(posCompartToLR, posC, 10);
+        itoa(posMemoriaToLR, posM, 10);
+        memcpy(nuevoCompartimento.posicion, posC, 2);
+        memcpy(nuevoCompartimento.pos_memoria, posM, 4);
+//        Serial1.println("sssssssssssssssssssssss");
+//        Serial1.println(posMemoriaToLR);
+//        Serial1.println(posCompartToLR);
+//        Serial1.println(s);
+//        Serial1.println(t);
+//        Serial1.println("aaaaaaaaaaaaaaaaaaaa");
+//        Serial1.println(nuevoCompartimento.posicion);
+//        Serial1.println(nuevoCompartimento.pos_memoria);
+        guardarCompartimiento(nuevoCompartimento);
+        Serial1.println("CELULAR GUARDADO");
+        pantalla.clear();
+        ledControl.clearDisplay(0);
+
+        // guardar log
+        char descripcion[11] = {'I','n','g','r','e','s','o',' ','C','e','l'};
+        char mylog[15];
+        memset(mylog, 0, 15);
+        memcpy(mylog, descripcion, 11);
+        guardarMemoriaLog(mylog);
+        
+        return true;
+      }else{
+        memset(contra_tempoToCompartiemnto, 0, 13);   
+        memset(contra_asteriscosToCompartiemnto, 0, 13);
+        indiceActualIngresarToCompartimento = 0;
+        intentosPassword++;
+        
+        if(intentosPassword == 2){
+          intentosPassword = 0;
+
+          while(true){
+            lecturaSensores(ledControl);
+            
+            pantalla.clear();
+            pantalla.print("INGRESO CEL");
+            pantalla.setCursor(0, 1);
+            pantalla.print("Bloqueo...");
+            pantalla.setCursor(0, 2);
+            pantalla.print("Retirar cel...");
+            if(verificarEstadoCompartimentoRetirado(compartimentoLibre)){ // ACEPTAR
+              Serial1.println("CELULAR RETIRADO");
+              delay(10000); // bloquear por 10 segundos
+              // regresar a secuancia inicial
+              Serial1.println("REGRESAR A SECUENCIA INICIAL");
+              delay(50);
+              pantalla.clear();
+              ledControl.clearDisplay(0);
+
+              // guardar log
+              char descripcion[14] = {'I','n','g','r','e',' ','f','a','l','l',' ','C','e','l'};
+              char mylog[15];
+              memset(mylog, 0, 15);
+              memcpy(mylog, descripcion, 14);
+              guardarMemoriaLog(mylog);
+              
+              return false;
+            }            
+            delay(150);
+          }
+          
+        }
+        Serial1.println("ERROR CREDENCIALES");
+      }
     }
 
     if(digitalRead(3) == LOW){ // CANCELAR
@@ -514,4 +536,255 @@ void ingresarCelular(LiquidCrystal pantalla, LedControl ledControl){
     delay(150);
   }
 
+  return false;
+
+}
+
+/////////////////////////////////////////////////////////////////////////// RETIRO CELULAR //////////////////////////////////////////////////////////////////////////////////
+
+bool compararNombresUsuario(char nombreUsuarioLeido[12], char nombreUsuarioActivo[12]){
+
+  String nombreLeido = "";
+  String nombreUsuario = "";
+
+//  Serial1.println("USUARIO-COMPARE");
+//  Serial1.println(nombreUsuarioLeido);
+//  Serial1.println(nombreUsuarioActivo);
+  
+  for(int i = 0; i < 12; i++){
+    nombreLeido.concat(nombreUsuarioLeido[i]);
+    nombreUsuario.concat(nombreUsuarioActivo[i]);
+  }
+
+  if(nombreLeido.equals(nombreUsuario)){
+    return true;
+  }
+
+  return false;
+}
+//
+//void buscarCompartimentoUsuario(char nombreUsuarioActivo[12]){
+//
+//  char posicionCA[2];
+//  char pos_memoriaCA[4];
+//  char nombreUsuarioLeido[12];
+//  char posicionesCompartimientoUsuario[9] = {0,0,0,0,0,0,0,0,0};
+//  
+//  for(int i = 0; i < 9; i++){    
+//    struct compartimiento compartimentoActual;
+//    struct usuario usuarioALeer;
+//    char j = (char)i;
+//    compartimentoActual = buscarCompartimiento(j); // tengo datos del compartimento
+//    memcpy(posicionCA, compartimentoActual.posicion, 2);
+//    memcpy(pos_memoriaCA, compartimentoActual.pos_memoria, 4);
+//    usuarioALeer = leerMemoriaUsuario(pos_memoriaCA);
+//    memcpy(nombreUsuarioLeido, usuarioALeer.nombre, 12);
+//    if(compararNombresUsuario(nombreUsuarioLeido, nombreUsuarioActivo)){
+//      posicionesCompartimientoUsuario[i] = 1;
+//    }  
+//  }
+//
+//}
+
+bool retiroCelular(LiquidCrystal pantalla, LedControl ledControl, char nombreUsuarioActivo[12], char contraUsuarioActivo[12]){
+  
+  char posicionCA[2];
+  char pos_memoriaCA[4];
+  char nombreUsuarioLeido[12];
+  char posicionesCompartimientoUsuario[9] = {0,0,0,0,0,0,0,0,0};
+  char respuestaSensorActual[9];
+
+  struct compartimiento compartimentoActual;
+  struct usuario usuarioALeer;
+  
+  // buscar compartimentos usuario
+  for(int i = 0; i < 9; i++){
+    struct compartimiento compartimentoActual;
+       
+    switch(i){
+      case 0: {
+        compartimentoActual = buscarCompartimiento('0');
+        break;
+      }
+      case 1: {
+        compartimentoActual = buscarCompartimiento('1');
+        break;
+      }
+      case 2: {
+        compartimentoActual = buscarCompartimiento('2');
+        break;
+      }
+      case 3: {
+        compartimentoActual = buscarCompartimiento('3');
+        break;
+      }
+      case 4: {
+        compartimentoActual = buscarCompartimiento('4');
+        break;
+      }
+      case 5: {
+        compartimentoActual = buscarCompartimiento('5');
+        break;
+      }
+      case 6: {
+        compartimentoActual = buscarCompartimiento('6');
+        break;
+      }
+      case 7: {
+        compartimentoActual = buscarCompartimiento('7');
+        break;
+      }
+      case 8: {
+        compartimentoActual = buscarCompartimiento('8');
+        break;
+      }
+    }
+    
+    memcpy(posicionCA, compartimentoActual.posicion, 2);
+    memcpy(pos_memoriaCA, compartimentoActual.pos_memoria, 4);
+    int pos_usuarioActivo = buscarUsuario(nombreUsuarioActivo);
+    Serial1.println("USUARIO-COMPARE");
+    Serial1.println("***************************8888111111111");
+    Serial1.println(posicionCA);
+    Serial1.println(pos_memoriaCA);
+    Serial1.println(pos_usuarioActivo);
+    Serial1.println("------------------------------");
+    memset(posicionCA, 0, 2);
+    memset(pos_memoriaCA, 0, 4);  
+    
+//    Serial1.println(usuarioALeer.nombre);
+//    memcpy(nombreUsuarioLeido, usuarioALeer.nombre, 12);
+//    if(compararNombresUsuario(nombreUsuarioLeido, nombreUsuarioActivo)){
+//      posicionesCompartimientoUsuario[i] = '1';
+//    }  
+  }
+
+//  Serial1.println("***************************8888111111111");
+//  Serial1.println(posicionCA);
+//  Serial1.println(pos_memoriaCA);
+//  Serial1.println(posicionesCompartimientoUsuario);  
+
+  // mostrar compartimentos usuario
+  updateMatrizCompartimento(posicionesCompartimientoUsuario);
+
+  delay(5000);
+
+  // Leemos sensores
+  Serial3.print("Bx");
+  Serial3.readBytes(respuestaSensorActual, 9);
+
+  pantalla.clear();
+  pantalla.print("RETIRAR CEL");
+  
+  String compUsuarioA = "";
+  for(int i = 0; i < 9; i++){ 
+    if(posicionesCompartimientoUsuario[i] == '1'){
+      compUsuarioA.concat(i+1);
+      compUsuarioA.concat(",");
+    }
+  }  
+  pantalla.setCursor(0, 1);
+  if(compUsuarioA.equals("")){
+    pantalla.print("Sin cels :c");
+    //return algo *************************************************************
+  }else {
+    pantalla.print(compUsuarioA);
+  }
+
+  pantalla.setCursor(0, 2);
+  pantalla.print("Retirar cel...");
+  pantalla.setCursor(0, 3);
+  while(true){
+    teclaToLR = leerTeclaToLR();
+    if (teclaToLR != ' ') {
+      pantalla.print(teclaToLR);
+      Serial1.println("SELECCIONO COMPARTIMENTO");
+      Serial1.println(teclaToLR);
+      delay(10000);
+    }
+  }
+}
+
+pruabaGuardarCompartimento(){
+  Serial1.println("GUARDANDO...............");
+  struct compartimiento nuevoCompartimento;
+
+  char posCompartToLR[2];
+  char posMemoriaToLR[4];
+
+  itoa(0, posCompartToLR, 10);
+  itoa(36, posMemoriaToLR, 10);
+
+  Serial1.println(posMemoriaToLR[0]);
+  Serial1.println(posMemoriaToLR[1]);
+  Serial1.println(posMemoriaToLR[2]);
+  Serial1.println(posMemoriaToLR[3]);
+  Serial1.println("ajua");
+  
+  delay(5000);
+//  Serial1.println(c.length());
+//
+//  for(int i = 0; i < c.length(); i++){
+//    Serial1.println(c.charAt(i));
+//  }
+//  
+//  char posCompartToLR[2];
+//  char posMemoriaToLR[4];
+//  posCompartToLR[0] = '0';
+//  posMemoriaToLR[0] = '3';
+//  posMemoriaToLR[1] = '0';
+  memcpy(nuevoCompartimento.posicion, posCompartToLR, 2);
+  memcpy(nuevoCompartimento.pos_memoria, posMemoriaToLR, 4);
+  Serial1.println("sssssssssssssssssssssss");
+  Serial1.println(posCompartToLR);
+  Serial1.println(posMemoriaToLR);
+//  Serial1.println(s);
+//  Serial1.println(t);
+  Serial1.println("aaaaaaaaaaaaaaaaaaaa");
+  Serial1.println(nuevoCompartimento.posicion);
+  Serial1.println(nuevoCompartimento.pos_memoria);
+  guardarCompartimiento(nuevoCompartimento);
+
+  delay(15);
+
+//  char posicionCA[2];
+//  char pos_memoriaCA[4];
+//  char nombreUsuarioLeido[12];
+//  char posicionesCompartimientoUsuario[9] = {0,0,0,0,0,0,0,0,0};
+//  char respuestaSensorActual[9];
+//  
+//   Serial1.println("LEYENDO");
+//   for(int i = 0; i < 9; i++){    
+//    struct compartimiento compartimentoActual;
+//    struct usuario usuarioALeer;
+//    Serial1.println("************z");
+//    char j = (char)i;
+//    Serial1.println(i);
+//    Serial1.println(j);
+//    compartimentoActual = buscarCompartimiento('0'); // tengo datos del compartimento
+//    memcpy(posicionCA, compartimentoActual.posicion, 2);
+//    memcpy(pos_memoriaCA, compartimentoActual.pos_memoria, 4);
+//    usuarioALeer = leerMemoriaUsuario(pos_memoriaCA);
+//    memcpy(nombreUsuarioLeido, usuarioALeer.nombre, 12);
+////    if(compararNombresUsuario(nombreUsuarioLeido, nombreUsuarioActivo)){
+////      posicionesCompartimientoUsuario[i] = '1';
+////    }  
+//
+//    Serial1.println("************e");
+//    Serial1.println(compartimentoActual.posicion);
+//    Serial1.println("************f");
+//    Serial1.println(compartimentoActual.pos_memoria);
+//  }
+//
+//  Serial1.println("************a");
+//  Serial1.println(posicionCA);
+//  Serial1.println("************b");
+//  Serial1.println(pos_memoriaCA);
+//  Serial1.println("************c");
+//  Serial1.println(nombreUsuarioLeido);
+//  Serial1.println("************d");
+//  Serial1.println(posicionesCompartimientoUsuario);
+  
+  
+  delay(200);
 }

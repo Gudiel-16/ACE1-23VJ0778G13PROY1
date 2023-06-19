@@ -1,6 +1,6 @@
 #include "LedControl.h"
 #include <LiquidCrystal.h>
-#include "loginRegistroPanel.h"
+//#include "loginRegistroPanel.h"
 #include "funcionalidadesUsuario.h"
 
 #define INICIALIZAR_TECLADO char tecla = ' '
@@ -96,8 +96,8 @@ void setup()
   pinMode(ACEPTAR, INPUT_PULLUP);
   pinMode(CANCELAR, INPUT_PULLUP);
 
-  actualizarPrimerInicioToLR(); // inicializa valores EEPROM
-//  registrarAdmin(); // guarda usuario admin en la EEPROM
+  actualizarPrimerInicio(); // inicializa valores EEPROM
+  registrarAdmin(); // guarda usuario admin en la EEPROM
 }
 
 INICIALIZAR_TECLADO;
@@ -155,8 +155,8 @@ void loop()
   switch (estadoActual)
   {
   case DATOS_INTEGRANTES:
-    mostrarDatosIntegrantes();
-    delay(800);
+//    mostrarDatosIntegrantes();
+    delay(80);
     estadoActual = MENU_PRINCIPAL;
     pantalla.clear();
     break;
@@ -272,7 +272,7 @@ void loop()
     {
       pantalla.setCursor(0, 1);
       pantalla.print("INGRESO-CEL");
-      delay(500);
+      delay(200);
       estadoActual = INGRESO_DISPOSITIVO;
       pantalla.clear();
     }
@@ -332,55 +332,49 @@ void loop()
       delay(500);
       estadoActual = MENU_PRINCIPAL;
       pantalla.clear();
+
+      // guardar log
+      char descripcion[12] = {'L','o','g','o','u','t',' ','A','d','m','i','n'};
+      char mylog[15];
+      memset(mylog, 0, 15);
+      memcpy(mylog, descripcion, 12);
+      guardarMemoriaLog(mylog);
     }
     break;
   case INGRESO_DISPOSITIVO:
-    Serial.println("INGRESO_DISPOSITIVO");
-    pantalla.setCursor(0, 0);
-    pantalla.print("INGRESANDO...");
-
-    tecla = leerTecla();
-    delay(165);
-    if (tecla == '1') //------------------------
-    {
-      pantalla.setCursor(0, 1);
-      pantalla.print("INGRESADO...");
-      delay(500);
+    Serial1.println("INGRESO_DISPOSITIVO");
+    if(ingresarCelular(pantalla, ledControl, nombreUsuarioActivo, contraUsuarioActivo)){
       estadoActual = MENU_USUARIO;
-      pantalla.clear();
+    }else{
+      estadoActual = MENU_PRINCIPAL;
     }
+    
+    delay(165);
+
     break;
   case RETIRO_DISPOSITIVO:
-    Serial.println("RETIRO_DISPOSITIVO");
-    pantalla.setCursor(0, 0);
-    pantalla.print("RETIRO...");
-
-    tecla = leerTecla();
-    delay(165);
-    if (tecla == '1') //------------------------
-    {
-      pantalla.setCursor(0, 1);
-      pantalla.print("RETIRADO...");
-      delay(500);
+    if(retiroCelular(pantalla, ledControl, nombreUsuarioActivo, contraUsuarioActivo)){
       estadoActual = MENU_USUARIO;
-      pantalla.clear();
+    }else{
+      estadoActual = MENU_PRINCIPAL;
     }
+    
     break;
   case CERRAR_SESION:
-    Serial.println("CERRAR_SESION");
-    pantalla.setCursor(0, 0);
-    pantalla.print("CERRAR-SESION...");
+    Serial1.println("CERRAR_SESION");
+    // guardar log
+    char descripcion[11] = {'L','o','g','o','u','t',' ','U','s','e','r'};
+    char mylog[15];
+    memset(mylog, 0, 15);
+    memcpy(mylog, descripcion, 11);
+    guardarMemoriaLog(mylog);
 
-    tecla = leerTecla();
-    delay(165);
-    if (tecla == '1') //------------------------
-    {
-      pantalla.setCursor(0, 1);
-      pantalla.print("CLOSE-SESION");
-      delay(500);
-      estadoActual = MENU_PRINCIPAL;
-      pantalla.clear();
-    }
+    pantalla.setCursor(0, 1);
+    pantalla.print("CLOSE-SESION");
+    delay(500);
+    estadoActual = MENU_PRINCIPAL;
+    pantalla.clear();
+    
     break;
   case ELMINAR_USUARIO:
     Serial.println("ELMINAR_USUARIO");
