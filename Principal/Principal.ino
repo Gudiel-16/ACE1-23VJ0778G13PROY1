@@ -2,6 +2,7 @@
 #include <LiquidCrystal.h>
 //#include "loginRegistroPanel.h"
 #include "funcionalidadesUsuario.h"
+#include "bluetooth.h"
 
 #define INICIALIZAR_TECLADO char tecla = ' '
 
@@ -29,6 +30,7 @@ char teclas[4][3] = {{'1', '2', '3'},
 // Estados del Flujo del programa
 enum EstadoMenu
 {
+  ESPERANDO,
   DATOS_INTEGRANTES,
   MENU_PRINCIPAL,
   INICIO_SESION,
@@ -146,14 +148,22 @@ void mostrarDatosIntegrantes()
     pantalla.clear();
   }
 }
+int tipo_esper; 
 
 //------------------------------------------------------------------
-
 void loop()
 {
   // ---------------------Logica correspondiente al flujo del programa
   switch (estadoActual)
   {
+  case ESPERANDO: {
+	    esperando(pantalla);
+      ingresar(tipo_espera, pantalla);
+      pantalla.clear();
+	    estadoActual = MENU_PRINCIPAL;
+	    //estado_actual = siguiente_estado;
+	    //break;
+        }
   case DATOS_INTEGRANTES:
 //    mostrarDatosIntegrantes();
     delay(80);
@@ -219,8 +229,10 @@ void loop()
       pantalla.clear();
       pantalla.setCursor(0, 0);
       pantalla.print("LOGINxAAP");
-      delay(500);
-      estadoActual = MENU_ADMIN;
+      Serial.print("LOGINxAPP");
+      delay(1000);
+      estadoActual = ESPERANDO;
+      tipo_espera = 0;
       pantalla.clear();
 
     } 
@@ -249,8 +261,11 @@ void loop()
       //FUNCIONALIDAD DE REGISTRO POR APP
       pantalla.clear();
       pantalla.setCursor(0, 0);
-      pantalla.print("RESITROxAAP");
+      pantalla.print("REGISTROxAPP");
+      Serial.print("REGISTROxAPP");
       delay(500);
+      estadoActual = ESPERANDO;
+      tipo_espera = 1;
       pantalla.clear();
 
     } else if (tecla == '3') //3 REGRESAR
