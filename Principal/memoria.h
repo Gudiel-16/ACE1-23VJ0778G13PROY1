@@ -292,3 +292,50 @@ void restarEstadoSistema(byte estado) {
 byte obtenerCantidadEstado(byte estado) {
     return EEPROM.read(particion_compartimientos - estado);
 }
+
+
+// Pruebas
+//actualizarPrimerInicio();
+//
+//  struct usuario nuevo = {
+//    "nuevonombre1",
+//    "contrasNueva",
+//    "12345678"
+//  };
+//  guardarMemoriaUsuario(nuevo);
+//
+//
+//  struct compartimiento cmp = {
+//    "0",
+//    "200"
+//  };
+//  guardarCompartimiento(cmp);
+//  vaciarCompartimiento("2");
+//
+//  struct compartimiento cmp2;
+//
+//  cmp2 = buscarCompartimiento("2");
+//
+//  int posicion = buscarUsuario("nuevonombre1");
+//  Serial1.println(cmp2.pos_memoria);
+//  Serial1.println(posicion);
+//
+//  char descripcion[16] = "evento";
+//
+//  guardarMemoriaLog(descripcion);
+//
+//  struct evento evt2 = buscarLog(0);
+//  Serial1.println(evt2.descripcion);
+//  byte logs = obtenerNumeroLogs();
+//  Serial1.println(logs);
+//
+//  
+//  agregarEstadoSistema(1);
+//  agregarEstadoSistema(4);
+//  agregarEstadoSistema(4);
+//
+//  Serial1.println("ESTADOS");
+//  Serial1.println(obtenerCantidadEstado(1));
+//  Serial1.println(obtenerCantidadEstado(2));
+//  Serial1.println(obtenerCantidadEstado(3));
+//  Serial1.println(obtenerCantidadEstado(4));
