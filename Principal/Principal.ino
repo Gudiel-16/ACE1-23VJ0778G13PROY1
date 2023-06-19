@@ -21,6 +21,8 @@ String cadena = "->";
 // credenciales usuario activo
 char nombreUsuarioActivo[12];
 char contraUsuarioActivo[12];
+char descripcionCS[11] = {'L','o','g','o','u','t',' ','U','s','e','r'};
+char mylogCS[15];
 
 char teclas[4][3] = {{'1', '2', '3'},
                      {'4', '5', '6'},
@@ -378,11 +380,9 @@ void loop()
   case CERRAR_SESION:
     Serial1.println("CERRAR_SESION");
     // guardar log
-    char descripcion[11] = {'L','o','g','o','u','t',' ','U','s','e','r'};
-    char mylog[15];
-    memset(mylog, 0, 15);
-    memcpy(mylog, descripcion, 11);
-    guardarMemoriaLog(mylog);
+    memset(mylogCS, 0, 15);
+    memcpy(mylogCS, descripcionCS, 11);
+    guardarMemoriaLog(mylogCS);
 
     pantalla.setCursor(0, 1);
     pantalla.print("CLOSE-SESION");
