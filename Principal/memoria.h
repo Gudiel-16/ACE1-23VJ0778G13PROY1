@@ -48,13 +48,6 @@ void actualizarPrimerInicio() {
   if (EEPROM.read(particion_logs) == 255) {
     EEPROM.write(particion_logs, 0);
   }
-
-  // Espacios para los datos del estado del sistema
-  for(int i = 1; i <= 4; i++) {
-    if (EEPROM.read(particion_compartimientos - i) == 255) {
-      EEPROM.write(particion_compartimientos - i, 0);
-    }
-  }
 }
 
 // Encripta dos veces los datos del array
@@ -148,13 +141,14 @@ void guardarMemoriaUsuario(struct usuario nuevo_usuario) {
 
     int encontrado = buscarUsuario(nuevo_usuario.nombre);
     if(encontrado == 0) {
-      Serial1.println("Guardando usuario en la memoria...");
+      Serial1.println("No se encontro nada");
     } else {
-      Serial1.println("Ocupado: Ya existe un usuario con el mismo nombre");
+      Serial1.println("Ocupado: Ya existe");
       return;
     }
 
     EEPROM.get(0, numero_usuarios);
+    Serial1.println(numero_usuarios);
     int siguiente_direccion = 1;
     for (int i=0; i<numero_usuarios; i++) {
         siguiente_direccion += sizeof(struct usuario);
@@ -171,20 +165,7 @@ void guardarMemoriaUsuario(struct usuario nuevo_usuario) {
 }
 
 void eliminarUsuario(char* nombre) {
-    int posicion = buscarUsuario(nombre);
-    if (posicion == 0) {
-        Serial1.println("No se pudo eliminar el usuario");
-        return;
-    }
-
-    struct usuario eliminar = {
-        "0",
-        "0",
-        "0"
-    };
-
-    EEPROM.put(posicion, eliminar);
-    Serial1.println("Usuario eliminado");
+  
 }
 
 // ------------------------ EVENTOS/LOGS --------------------------
@@ -270,25 +251,10 @@ void vaciarCompartimiento(char* posicion) {
 }
 
 // ------------------------- ESTADOS DEL SISTEMA -----------------------
-// agregar esto en el archivo Principal.ino
-// #define CELULARES 1
-// #define INTENTOS_FALLIDOS 2
-// #define INCIDENTES 3
-// #define USUARIOS_ACTIVOS 4
 void agregarEstadoSistema(byte estado) {
-    int posicion = particion_compartimientos - estado;
-    byte numero = EEPROM.read(posicion);
-    numero++;
-    EEPROM.write(posicion, numero);
+  
 }
 
 void restarEstadoSistema(byte estado) {
-    int posicion = particion_compartimientos - estado;
-    byte numero = EEPROM.read(posicion);
-    numero--;
-    EEPROM.write(posicion, numero);
-}
-
-byte obtenerCantidadEstado(byte estado) {
-    return EEPROM.read(particion_compartimientos - estado);
+  
 }

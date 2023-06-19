@@ -2,9 +2,12 @@
 #include <LiquidCrystal.h>
 #include "loginRegistroPanel.h"
 #include "funcionalidadesUsuario.h"
-
+//hay que editar
+#define LOOP while(true)
 #define INICIALIZAR_TECLADO char tecla = ' '
-
+//new
+#define LINEA_VACIA "                "
+//fin new
 //-----prueba
 const int NUM_INTEGRANTES = 5;
 const int CASILLAS_PANTALLA = 16;
@@ -29,6 +32,7 @@ char teclas[4][3] = {{'1', '2', '3'},
 // Estados del Flujo del programa
 enum EstadoMenu
 {
+  ESPERANDO,
   DATOS_INTEGRANTES,
   MENU_PRINCIPAL,
   INICIO_SESION,
@@ -68,6 +72,34 @@ void inicializarMatrizDriver()
   ledControl.setIntensity(0, 15); // setIntensity(# de dispositivo (indice), intensidad de brillo del led de 0 a 15)
   ledControl.clearDisplay(0);     // clearDisplay(# de dispositivo), apaga todos los leds de la pantalla
 }
+
+//INICIO CODIGO BLUE.
+void enviarConfirmar(char* cadena) {
+    Serial.println(cadena);
+    bool hayAlgo = false;
+    char recibidos[3];
+    LOOP {
+        while(Serial.available()) {
+	    Serial.readBytes(recibidos, 2);
+            hayAlgo = true;
+        }
+        if (hayAlgo && !Serial.available()) break;
+    }
+}
+
+void limpiarBuffer() {
+    int t0 = millis();
+    int t1 = millis();
+    LOOP {
+        t1 = millis();
+        while(Serial.available()) {
+	    Serial.read();
+        }
+        if ((t1 - t0 >= 1000) && !Serial.available()) break;
+    }
+}
+
+//FIN CODIGO BLUE.
 
 void inicializarPinesTeclado()
 {
@@ -148,6 +180,31 @@ void mostrarDatosIntegrantes()
 }
 
 //------------------------------------------------------------------
+int tipo_espera;
+//NEW
+char nombre_tempp[11];
+char contra_tempp[11];
+char numero_tempp[9] ;
+
+boolean entradaAceptada() {
+    LOOP {
+        if (digitalRead(2) == false) {
+	    delay(210);
+	    return true;
+	}
+        if (digitalRead(3) == false) {
+	    delay(210);
+	    return false;
+	}
+    }
+}
+
+void imprimirAsteriscos(char* cadena) {
+    for (; *cadena; cadena++)
+        pantalla.write('*');
+}
+
+//FIN NEW
 
 void loop()
 {
@@ -155,12 +212,274 @@ void loop()
   switch (estadoActual)
   {
   case DATOS_INTEGRANTES:
-    mostrarDatosIntegrantes();
+    //int tipo_espera;
+    //mostrarDatosIntegrantes();
     delay(800);
     estadoActual = MENU_PRINCIPAL;
     pantalla.clear();
     break;
+  //INICIO CODIGO BLUE
+
+  case ESPERANDO: {
+	    limpiarBuffer();
+	    pantalla.clear();
+	    pantalla.print(" Esperando  una ");
+	    pantalla.setCursor(0, 1);
+	    pantalla.print("   conexion...  ");
+	    bool alguienPorAhi = false;
+            char recibidos[3];
+	    LOOP {
+	        while(Serial.available()) {
+		    Serial.readBytes(recibidos, 2);
+		    alguienPorAhi = true;
+		}
+		if (alguienPorAhi && !Serial.available()) break;
+	    }
+      if(tipo_espera == 0){
+        
+        //estadoActual = INICIO_SESION;
+        //pantalla.clear();
+        //NEW
+
+            memset(nombre_tempp, 0, 11);    
+            memset(contra_tempp, 0, 11);    
+            memset(numero_tempp, 0,  9);    
+            struct usuario nuevo_usuario;
+	    LOOP {
+	        limpiarBuffer();
+	        enviarConfirmar("Nombre:");
+            	memset(nombre_tempp, 0, 11);    
+                pantalla.clear();
+                pantalla.print("L O G I N");
+                pantalla.setCursor(0, 1);
+                pantalla.print(" - NOMBRE:");
+                pantalla.setCursor(0, 2);
+                // OBTENER CADENA DE APLICACIÓN -- Nombre
+                bool seEnvioAlgo = false;
+                int indiceNombre = 0;
+                long int t0 = millis();
+                long int t1 = millis();
+	        limpiarBuffer();
+                LOOP {
+                    // SI YA SE ENVIO ALGO DESDE LA APLICACION
+                    while (Serial.available()) {
+                        seEnvioAlgo = true;
+                    //   RECIBIRLO
+                        nombre_tempp[indiceNombre++] = Serial.read();
+                    }
+                    // CONTROLAR CUANTO HA PASADO DESDE QUE COME...
+                    if (seEnvioAlgo) {
+                        t1 = millis();
+                        if (t1 - t0 >= 500) break;
+                    } else {
+                        t0 = millis();
+                        t1 = millis();
+                    }
+                }
+                pantalla.print(nombre_tempp);
+                pantalla.setCursor(0, 3);
+                pantalla.print("Correcto?       ");
+                delay(500);
+    	        if (entradaAceptada()){               
+                //estadoActual = MENU_PRINCIPAL;
+                break;
+              }
+                     
+		pantalla.setCursor(0, 2);
+		pantalla.print(LINEA_VACIA);
+		pantalla.setCursor(0, 3);
+		pantalla.print(LINEA_VACIA);
+            }
+
+
+            LOOP {
+	        limpiarBuffer();
+	        enviarConfirmar("Contraseña:");
+            	memset(contra_tempp, 0, 11);    
+                pantalla.clear();
+                pantalla.print("L O G I N");
+                pantalla.setCursor(0, 1);
+                pantalla.print(" - Contras:");
+                pantalla.setCursor(0, 2);
+                // OBTENER CADENA DE APLICACIÓN -- Nombre
+                bool seEnvioAlgo = false;
+                int indiceContra = 0;
+                long int t0 = millis();
+                long int t1 = millis();
+	        limpiarBuffer();
+                LOOP {
+                    // SI YA SE ENVIO ALGO DESDE LA APLICACION
+                    while (Serial.available()) {
+                        seEnvioAlgo = true;
+                    //   RECIBIRLO
+                        contra_tempp[indiceContra++] = Serial.read();
+                    }
+                    // CONTROLAR CUANTO HA PASADO DESDE QUE COME...
+                    if (seEnvioAlgo) {
+                        t1 = millis();
+                        if (t1 - t0 >= 500) break;
+                    } else {
+                        t0 = millis();
+                        t1 = millis();
+                    }
+                }
+		imprimirAsteriscos(contra_tempp);
+                pantalla.setCursor(0, 3);
+                pantalla.print("Correcto?       ");
+                delay(500);
+    	        if (entradaAceptada()) break;
+		pantalla.setCursor(0, 2);
+		pantalla.print(LINEA_VACIA);
+		pantalla.setCursor(0, 3);
+		pantalla.print(LINEA_VACIA);
+            }
+
+      //FIN NEW
+        
+      }
+      if(tipo_espera == 1){
+        /*
+        estadoActual = REGISTRO;
+        pantalla.clear();*/
+        //NEW
+
+
+            memset(nombre_tempp, 0, 11);    
+            memset(contra_tempp, 0, 11);    
+            memset(numero_tempp, 0,  9);    
+            struct usuario nuevo_usuario;
+	    LOOP {
+	        limpiarBuffer();
+	        enviarConfirmar("Nombre:");
+            	memset(nombre_tempp, 0, 11);    
+                pantalla.clear();
+                pantalla.print("R E G I S T R O");
+                pantalla.setCursor(0, 1);
+                pantalla.print(" - NOMBRE:");
+                pantalla.setCursor(0, 2);
+                // OBTENER CADENA DE APLICACIÓN -- Nombre
+                bool seEnvioAlgo = false;
+                int indiceNombre = 0;
+                long int t0 = millis();
+                long int t1 = millis();
+	        limpiarBuffer();
+                LOOP {
+                    // SI YA SE ENVIO ALGO DESDE LA APLICACION
+                    while (Serial.available()) {
+                        seEnvioAlgo = true;
+                    //   RECIBIRLO
+                        nombre_tempp[indiceNombre++] = Serial.read();
+                    }
+                    // CONTROLAR CUANTO HA PASADO DESDE QUE COME...
+                    if (seEnvioAlgo) {
+                        t1 = millis();
+                        if (t1 - t0 >= 500) break;
+                    } else {
+                        t0 = millis();
+                        t1 = millis();
+                    }
+                }
+                pantalla.print(nombre_tempp);
+                pantalla.setCursor(0, 3);
+                pantalla.print("Correcto?       ");
+                delay(500);
+    	        if (entradaAceptada()) break;
+		pantalla.setCursor(0, 2);
+		pantalla.print(LINEA_VACIA);
+		pantalla.setCursor(0, 3);
+		pantalla.print(LINEA_VACIA);
+            }
+	    LOOP {
+	        limpiarBuffer();
+	        enviarConfirmar("Celular:");
+            	memset(numero_tempp, 0, 9);    
+                pantalla.clear();
+                pantalla.print("R E G I S T R O");
+                pantalla.setCursor(0, 1);
+                pantalla.print(" - Celular:");
+                pantalla.setCursor(0, 2);
+                // OBTENER CADENA DE APLICACIÓN -- Nombre
+                bool seEnvioAlgo = false;
+                int indiceNumero = 0;
+                long int t0 = millis();
+                long int t1 = millis();
+	        limpiarBuffer();
+                LOOP {
+                    // SI YA SE ENVIO ALGO DESDE LA APLICACION
+                    while (Serial.available()) {
+                        seEnvioAlgo = true;
+                    //   RECIBIRLO
+                        numero_tempp[indiceNumero++] = Serial.read();
+                    }
+                    // CONTROLAR CUANTO HA PASADO DESDE QUE COME...
+                    if (seEnvioAlgo) {
+                        t1 = millis();
+                        if (t1 - t0 >= 500) break;
+                    } else {
+                        t0 = millis();
+                        t1 = millis();
+                    }
+                }
+                pantalla.print(numero_tempp);
+                pantalla.setCursor(0, 3);
+                pantalla.print("Correcto?       ");
+                delay(500);
+    	        if (entradaAceptada()) break;
+		pantalla.setCursor(0, 2);
+		pantalla.print(LINEA_VACIA);
+		pantalla.setCursor(0, 3);
+		pantalla.print(LINEA_VACIA);
+            }
+	    LOOP {
+	        limpiarBuffer();
+	        enviarConfirmar("Contras:");
+            	memset(contra_tempp, 0, 11);    
+                pantalla.clear();
+                pantalla.print("R E G I S T R O");
+                pantalla.setCursor(0, 1);
+                pantalla.print(" - Contras:");
+                pantalla.setCursor(0, 2);
+                // OBTENER CADENA DE APLICACIÓN -- Nombre
+                bool seEnvioAlgo = false;
+                int indiceContra = 0;
+                long int t0 = millis();
+                long int t1 = millis();
+	        limpiarBuffer();
+                LOOP {
+                    // SI YA SE ENVIO ALGO DESDE LA APLICACION
+                    while (Serial.available()) {
+                        seEnvioAlgo = true;
+                    //   RECIBIRLO
+                        contra_tempp[indiceContra++] = Serial.read();
+                    }
+                    // CONTROLAR CUANTO HA PASADO DESDE QUE COME...
+                    if (seEnvioAlgo) {
+                        t1 = millis();
+                        if (t1 - t0 >= 500) break;
+                    } else {
+                        t0 = millis();
+                        t1 = millis();
+                    }
+                }
+		imprimirAsteriscos(contra_tempp);
+                pantalla.setCursor(0, 3);
+                pantalla.print("Correcto?       ");
+                delay(500);
+    	        if (entradaAceptada()) break;
+		pantalla.setCursor(0, 2);
+		pantalla.print(LINEA_VACIA);
+		pantalla.setCursor(0, 3);
+		pantalla.print(LINEA_VACIA);
+            }
+
+      }
+	    estadoActual = MENU_PRINCIPAL;
+	    break;
+        }
+
+  //FIN CODIGO BLUE
   case MENU_PRINCIPAL:
+    pantalla.clear();
     pantalla.setCursor(0, 0);
     pantalla.print("MENU-PRINCIPAL");
 
@@ -218,9 +537,11 @@ void loop()
       //FUNCIONALIDAD DE INICIO SESION POR APP
       pantalla.clear();
       pantalla.setCursor(0, 0);
-      pantalla.print("LOGINxAAP");
-      delay(500);
-      estadoActual = MENU_ADMIN;
+      pantalla.print("LOGINxAPP");
+      Serial.print("LOGINxAPP");
+      delay(1000);
+      estadoActual = ESPERANDO;
+      tipo_espera = 0;
       pantalla.clear();
 
     } 
@@ -247,10 +568,19 @@ void loop()
     } else if (tecla == '2') //2 REGISTRO POR APP
     { 
       //FUNCIONALIDAD DE REGISTRO POR APP
-      pantalla.clear();
+     /* pantalla.clear();
       pantalla.setCursor(0, 0);
       pantalla.print("RESITROxAAP");
       delay(500);
+      pantalla.clear();*/
+
+      pantalla.clear();
+      pantalla.setCursor(0, 0);
+      pantalla.print("REGISTROxAPP");
+      Serial.print("REGISTROxAPP");
+      delay(500);
+      estadoActual = ESPERANDO;
+      tipo_espera = 1;
       pantalla.clear();
 
     } else if (tecla == '3') //3 REGRESAR
