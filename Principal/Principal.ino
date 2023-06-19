@@ -1,5 +1,13 @@
 #include "LedControl.h"
 #include <LiquidCrystal.h>
+<<<<<<< Updated upstream
+=======
+#include "loginRegistroPanel.h"
+#include "funcionalidadesUsuario.h"
+#include "datosIntegrantes.h"
+#include "mostrarLogs.h"
+
+>>>>>>> Stashed changes
 #define INICIALIZAR_TECLADO char tecla = ' '
 
 //-----prueba
@@ -94,24 +102,6 @@ INICIALIZAR_TECLADO;
 
 //------------------------------------------------------------------
 
-void pintarCadenaMayorHorizontal(String cadena)
-{
-  String varMostrar = "";
-  for (int j = 0; j < cadena.length(); j++) // recorre cadena
-    {
-      char caracter = cadena.charAt(j);
-      varMostrar = varMostrar + caracter;
-
-      if (varMostrar.length() > CASILLAS_PANTALLA)
-      {
-        varMostrar = varMostrar.substring(1);
-      }
-
-      pantalla.setCursor(0, 1);
-      pantalla.print(varMostrar);
-      delay(50);
-    }
-}
 
 void mostrarDatosIntegrantes()
 {
@@ -129,7 +119,7 @@ void mostrarDatosIntegrantes()
 
     varTemp = equipo[i];
 
-    pintarCadenaMayorHorizontal(varTemp);
+    pintarCadenaMayorHorizontal(pantalla, CASILLAS_PANTALLA, varTemp, 1);
     delay(300);
 
     varTemp = "";

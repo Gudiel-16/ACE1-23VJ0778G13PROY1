@@ -3,12 +3,15 @@
 #include "panelOperacion.h"
 #include "memoria.h"
 
+<<<<<<< Updated upstream
 // NOTAS:
 // PARA PROBAR REGISTRO Y LOGIN, importar en el .ino: 
 //    #include "loginRegistroPanel.h"
 // LLAMAR LOS METODOS y pasarles como parametro la variable 'pantalla' y 'ledControl', ej:  
       // registroTeclado(pantalla, ledControl); 
       // loginTeclado(pantalla, ledControl);
+=======
+>>>>>>> Stashed changes
 
 int tamanioNombreTemp = 13; // 'n'
 int tamanioTelefonoTemp = 9; // 't'
