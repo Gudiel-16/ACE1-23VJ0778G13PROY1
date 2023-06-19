@@ -165,8 +165,8 @@ void loop()
 	    //break;
         }
   case DATOS_INTEGRANTES:
-//    mostrarDatosIntegrantes();
-    delay(80);
+    mostrarDatosIntegrantes();
+    delay(800);
     estadoActual = MENU_PRINCIPAL;
     pantalla.clear();
     break;
@@ -392,23 +392,18 @@ void loop()
     
     break;
   case ELMINAR_USUARIO:
-    Serial.println("ELMINAR_USUARIO");
+    Serial1.println("ELMINAR_USUARIO");
     pantalla.setCursor(0, 0);
     pantalla.print("ELIMINANDO..");
 
-    tecla = leerTecla();
+    borrarUsuario(nombreUsuarioActivo);
+    
     delay(165);
-    if (tecla == '1') //------------------------
-    {
-      pantalla.setCursor(0, 1);
-      pantalla.print("ELIMINADO");
-      delay(500);
-      estadoActual = MENU_PRINCIPAL;
-      pantalla.clear();
-    }
+    estadoActual = MENU_PRINCIPAL;
+    pantalla.clear();
     break;
   case VISTA_LOGS: // estados menu administrador
-    Serial.println("VISTA_LOGS");
+    Serial1.println("VISTA_LOGS");
     pantalla.setCursor(0, 0);
     pantalla.print("LOGS...");
 
@@ -424,7 +419,7 @@ void loop()
     }
     break;
   case ESTADO_SISTEMA:
-    Serial.println("ESTADO_SISTEMA");
+    Serial1.println("ESTADO_SISTEMA");
     pantalla.setCursor(0, 0);
     pantalla.print("ESTADO-SIS...");
 
