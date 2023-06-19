@@ -479,6 +479,10 @@ bool ingresarCelular(LiquidCrystal pantalla, LedControl ledControl, char nombreU
         memset(mylog, 0, 15);
         memcpy(mylog, descripcion, 11);
         guardarMemoriaLog(mylog);
+
+        // estado sistema
+        byte myNum = 1;
+        agregarEstadoSistema(myNum);
         
         return true;
       }else{
@@ -489,6 +493,10 @@ bool ingresarCelular(LiquidCrystal pantalla, LedControl ledControl, char nombreU
         
         if(intentosPassword == 2){
           intentosPassword = 0;
+
+          // estado sistema
+          byte myNum = 3;
+          agregarEstadoSistema(myNum);
 
           while(true){
             lecturaSensores(ledControl);
