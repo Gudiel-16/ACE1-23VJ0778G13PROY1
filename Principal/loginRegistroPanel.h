@@ -263,9 +263,21 @@ bool loginTeclado(LiquidCrystal pantalla, LedControl ledControl){
   
     if(verificarLogin(nombre_temp, contra_temp)){
       Serial1.println("LOGIN CORRECTO");
-      ledControl.clearDisplay(0);
+      //guardar log
+      char descripcion[13] = {'L','o','g','i','n',' ','E','x','i','t','o', 's', 'o'};
+      char mylog[15];
+      memset(mylog, 0, 15);
+      memcpy(mylog, descripcion, 13);
+      guardarMemoriaLog(mylog);   
       return true;
     }else{
+      // guardar log
+      char descripcion[13] = {'L','o','g','i','n',' ','F','a','l','l','i', 'd', 'o'};
+      char mylog[15];
+      memset(mylog, 0, 15);
+      memcpy(mylog, descripcion, 13);
+      guardarMemoriaLog(mylog); 
+      
       memset(nombre_temp, 0, tamanioNombreTemp);
       memset(contra_temp, 0, tamanioContraTemp);   
       memset(contra_asteriscos, 0, tamanioContraTemp);
@@ -544,6 +556,37 @@ void registrarAdmin(){
   memcpy(nuevo_usuario.phone, telefono_temp, 8);
 
   guardarMemoriaUsuario(nuevo_usuario);  
+
+  // usuario quemado para pruebas
+
+//  memset(nombre_temp, 0, tamanioNombreTemp);
+//  memset(contra_temp, 0, tamanioContraTemp);   
+//  memset(telefono_temp, 0,  tamanioTelefonoTemp); 
+//  struct usuario nuevo_usuario2;
+//  
+//  nombre_temp[0] = 'a';
+////  nombre_temp[1] = 'a';
+////  nombre_temp[2] = 'a';
+//
+//  contra_temp[0] = 'a';
+////  contra_temp[1] = '1';
+////  contra_temp[2] = '!';
+//
+//  telefono_temp[0] = '1';
+//  telefono_temp[1] = '2';
+//  telefono_temp[2] = '3';
+//  telefono_temp[3] = '4';
+//  telefono_temp[4] = '5';
+//  telefono_temp[5] = '6';
+//  telefono_temp[6] = '7';
+//  telefono_temp[7] = '8';  
+//
+//  memcpy(nuevo_usuario2.nombre, nombre_temp, 12);
+//  memcpy(nuevo_usuario2.password, contra_temp, 12);
+//  memcpy(nuevo_usuario2.phone, telefono_temp, 8);
+//
+//  guardarMemoriaUsuario(nuevo_usuario2);
+  
 }
 
 bool tipoRol(char nombreUsuario[12]){
@@ -560,10 +603,12 @@ bool tipoRol(char nombreUsuario[12]){
   nombreLogin.concat(nombreUsuario[9]);
   nombreLogin.concat(nombreUsuario[10]);
 
-  Serial1.print("----------------");
-  Serial1.print(nombreLogin);
-  Serial1.print("----------------");
   if(nombreLogin.equals("admin!82871")){
+    char descripcion[11] = {'L','o','g','i','n',' ','a','d','m','i','n'};
+    char mylog[15];
+    memset(mylog, 0, 15);
+    memcpy(mylog, descripcion, 11);
+    guardarMemoriaLog(mylog); 
     return true;
   }
 
