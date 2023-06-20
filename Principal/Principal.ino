@@ -1,13 +1,10 @@
 #include "LedControl.h"
 #include <LiquidCrystal.h>
-<<<<<<< Updated upstream
-=======
 #include "loginRegistroPanel.h"
 #include "funcionalidadesUsuario.h"
 #include "datosIntegrantes.h"
 #include "mostrarLogs.h"
 
->>>>>>> Stashed changes
 #define INICIALIZAR_TECLADO char tecla = ' '
 
 //-----prueba
