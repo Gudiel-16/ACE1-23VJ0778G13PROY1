@@ -1,9 +1,5 @@
 #include "LedControl.h"
 #include <LiquidCrystal.h>
-#include "loginRegistroPanel.h"
-#include "funcionalidadesUsuario.h"
-#include "datosIntegrantes.h"
-#include "mostrarLogs.h"
 
 #define INICIALIZAR_TECLADO char tecla = ' '
 
@@ -19,6 +15,12 @@ LiquidCrystal pantalla(8, 9, 10, 11, 12, 13);
 int ACEPTAR = 2, CANCELAR = 3;
 String cadena = "->";
 
+// credenciales usuario activo
+char nombreUsuarioActivo[12];
+char contraUsuarioActivo[12];
+char descripcionCS[11] = {'L','o','g','o','u','t',' ','U','s','e','r'};
+char mylogCS[15];
+
 char teclas[4][3] = {{'1', '2', '3'},
                      {'4', '5', '6'},
                      {'7', '8', '9'},
@@ -27,6 +29,7 @@ char teclas[4][3] = {{'1', '2', '3'},
 // Estados del Flujo del programa
 enum EstadoMenu
 {
+  ESPERANDO,
   DATOS_INTEGRANTES,
   MENU_PRINCIPAL,
   INICIO_SESION,
@@ -86,13 +89,16 @@ void inicializarPinesTeclado()
 void setup()
 {
   Serial.begin(9600); // puerto bluetooh
-  // Serial1.begin(9600); // puerto virtual terminal
-  // Serial3.begin(9600); // puerto arduino secundario
+  Serial1.begin(9600); // puerto virtual terminal
+  Serial3.begin(9600); // puerto arduino secundario
   pantalla.begin(16, 4);
   inicializarMatrizDriver();
   inicializarPinesTeclado();
   pinMode(ACEPTAR, INPUT_PULLUP);
   pinMode(CANCELAR, INPUT_PULLUP);
+
+  actualizarPrimerInicio(); // inicializa valores EEPROM
+  registrarAdmin(); // guarda usuario admin en la EEPROM
 }
 
 INICIALIZAR_TECLADO;
@@ -123,17 +129,24 @@ void mostrarDatosIntegrantes()
     pantalla.clear();
   }
 }
+int tipo_esper; 
 
 //------------------------------------------------------------------
-
 void loop()
 {
   // ---------------------Logica correspondiente al flujo del programa
-
   switch (estadoActual)
   {
+  case ESPERANDO: {
+	    esperando(pantalla);
+      ingresar(tipo_espera, pantalla);
+      pantalla.clear();
+	    estadoActual = MENU_PRINCIPAL;
+	    //estado_actual = siguiente_estado;
+	    //break;
+        }
   case DATOS_INTEGRANTES:
-    //mostrarDatosIntegrantes();
+    mostrarDatosIntegrantes();
     delay(800);
     estadoActual = MENU_PRINCIPAL;
     pantalla.clear();
@@ -175,9 +188,21 @@ void loop()
       //FUNCIONALIDAD DE INICIO SESION POR PANEL ()
       pantalla.clear();
       pantalla.setCursor(0, 0);
-      pantalla.print("LOGINxPANEL");
+      memset(nombreUsuarioActivo, 0, 12);
+      memset(contraUsuarioActivo, 0, 12);  
+      if(loginTeclado(pantalla, ledControl)){
+        // guardamos credenciales
+        memcpy(nombreUsuarioActivo, nombre_temp, 12);
+        memcpy(contraUsuarioActivo, contra_temp, 12);
+        if(tipoRol(nombreUsuarioActivo)){
+          estadoActual = MENU_ADMIN;
+        }else{
+          estadoActual = MENU_USUARIO;
+        }
+      }else{
+        estadoActual = DATOS_INTEGRANTES; // fallo de 2 intentos en login
+      }
       delay(500);
-      estadoActual = MENU_USUARIO;
       pantalla.clear();
     } else if (tecla == '2') //2 INICIO SESION POR APP
     { 
@@ -185,8 +210,10 @@ void loop()
       pantalla.clear();
       pantalla.setCursor(0, 0);
       pantalla.print("LOGINxAAP");
-      delay(500);
-      estadoActual = MENU_ADMIN;
+      Serial.print("LOGINxAPP");
+      delay(1000);
+      estadoActual = ESPERANDO;
+      tipo_espera = 0;
       pantalla.clear();
 
     } 
@@ -205,7 +232,9 @@ void loop()
       //FUNCIONALIDAD DE REGISTRO POR PANEL ()
       pantalla.clear();
       pantalla.setCursor(0, 0);
-      pantalla.print("RESITROxPANEL");
+      if(registroTeclado(pantalla, ledControl)){
+        estadoActual = MENU_PRINCIPAL;
+      }
       delay(500);
       pantalla.clear();
     } else if (tecla == '2') //2 REGISTRO POR APP
@@ -213,8 +242,11 @@ void loop()
       //FUNCIONALIDAD DE REGISTRO POR APP
       pantalla.clear();
       pantalla.setCursor(0, 0);
-      pantalla.print("RESITROxAAP");
+      pantalla.print("REGISTROxAPP");
+      Serial.print("REGISTROxAPP");
       delay(500);
+      estadoActual = ESPERANDO;
+      tipo_espera = 1;
       pantalla.clear();
 
     } else if (tecla == '3') //3 REGRESAR
@@ -236,7 +268,7 @@ void loop()
     {
       pantalla.setCursor(0, 1);
       pantalla.print("INGRESO-CEL");
-      delay(500);
+      delay(200);
       estadoActual = INGRESO_DISPOSITIVO;
       pantalla.clear();
     }
@@ -296,74 +328,61 @@ void loop()
       delay(500);
       estadoActual = MENU_PRINCIPAL;
       pantalla.clear();
+
+      // guardar log
+      char descripcion[12] = {'L','o','g','o','u','t',' ','A','d','m','i','n'};
+      char mylog[15];
+      memset(mylog, 0, 15);
+      memcpy(mylog, descripcion, 12);
+      guardarMemoriaLog(mylog);
     }
     break;
   case INGRESO_DISPOSITIVO:
-    Serial.println("INGRESO_DISPOSITIVO");
-    pantalla.setCursor(0, 0);
-    pantalla.print("INGRESANDO...");
-
-    tecla = leerTecla();
-    delay(165);
-    if (tecla == '1') //------------------------
-    {
-      pantalla.setCursor(0, 1);
-      pantalla.print("INGRESADO...");
-      delay(500);
+    Serial1.println("INGRESO_DISPOSITIVO");
+    if(ingresarCelular(pantalla, ledControl, nombreUsuarioActivo, contraUsuarioActivo)){
       estadoActual = MENU_USUARIO;
-      pantalla.clear();
+    }else{
+      estadoActual = MENU_PRINCIPAL;
     }
+    
+    delay(165);
+
     break;
   case RETIRO_DISPOSITIVO:
-    Serial.println("RETIRO_DISPOSITIVO");
-    pantalla.setCursor(0, 0);
-    pantalla.print("RETIRO...");
-
-    tecla = leerTecla();
-    delay(165);
-    if (tecla == '1') //------------------------
-    {
-      pantalla.setCursor(0, 1);
-      pantalla.print("RETIRADO...");
-      delay(500);
+    if(retiroCelular(pantalla, ledControl, nombreUsuarioActivo, contraUsuarioActivo)){
       estadoActual = MENU_USUARIO;
-      pantalla.clear();
+    }else{
+      estadoActual = MENU_PRINCIPAL;
     }
+    
     break;
   case CERRAR_SESION:
-    Serial.println("CERRAR_SESION");
-    pantalla.setCursor(0, 0);
-    pantalla.print("CERRAR-SESION...");
+    Serial1.println("CERRAR_SESION");
+    // guardar log
+    memset(mylogCS, 0, 15);
+    memcpy(mylogCS, descripcionCS, 11);
+    guardarMemoriaLog(mylogCS);
 
-    tecla = leerTecla();
-    delay(165);
-    if (tecla == '1') //------------------------
-    {
-      pantalla.setCursor(0, 1);
-      pantalla.print("CLOSE-SESION");
-      delay(500);
-      estadoActual = MENU_PRINCIPAL;
-      pantalla.clear();
-    }
+    pantalla.setCursor(0, 1);
+    pantalla.print("CLOSE-SESION");
+    delay(500);
+    estadoActual = MENU_PRINCIPAL;
+    pantalla.clear();
+    
     break;
   case ELMINAR_USUARIO:
-    Serial.println("ELMINAR_USUARIO");
+    Serial1.println("ELMINAR_USUARIO");
     pantalla.setCursor(0, 0);
     pantalla.print("ELIMINANDO..");
 
-    tecla = leerTecla();
+    borrarUsuario(nombreUsuarioActivo);
+    
     delay(165);
-    if (tecla == '1') //------------------------
-    {
-      pantalla.setCursor(0, 1);
-      pantalla.print("ELIMINADO");
-      delay(500);
-      estadoActual = MENU_PRINCIPAL;
-      pantalla.clear();
-    }
+    estadoActual = MENU_PRINCIPAL;
+    pantalla.clear();
     break;
   case VISTA_LOGS: // estados menu administrador
-    Serial.println("VISTA_LOGS");
+    Serial1.println("VISTA_LOGS");
     pantalla.setCursor(0, 0);
     pantalla.print("LOGS...");
 
@@ -379,7 +398,7 @@ void loop()
     }
     break;
   case ESTADO_SISTEMA:
-    Serial.println("ESTADO_SISTEMA");
+    Serial1.println("ESTADO_SISTEMA");
     pantalla.setCursor(0, 0);
     pantalla.print("ESTADO-SIS...");
 
