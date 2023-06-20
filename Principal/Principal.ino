@@ -6,6 +6,13 @@
 
 #define INICIALIZAR_TECLADO char tecla = ' '
 
+#define CELULARES 1
+#define INTENTOS_FALLIDOS 2
+#define INCIDENTES 3
+#define USUARIOS_ACTIVOS 4
+int pagina = 1;
+bool enviado = false;
+
 //-----prueba
 const int NUM_INTEGRANTES = 5;
 const int CASILLAS_PANTALLA = 16;
@@ -46,7 +53,7 @@ enum EstadoMenu
   VISTA_LOGS,
   ESTADO_SISTEMA
 };
-EstadoMenu estadoActual = DATOS_INTEGRANTES;
+EstadoMenu estadoActual = ESTADO_SISTEMA;
 
 char leerTecla()
 {
@@ -419,9 +426,11 @@ void loop()
     }
     break;
   case ESTADO_SISTEMA:
+  {
     Serial1.println("ESTADO_SISTEMA");
-    pantalla.setCursor(0, 0);
-    pantalla.print("ESTADO-SIS...");
+
+    mostrarEstadosSistema(pagina);
+    
 
     tecla = leerTecla();
     delay(165);
@@ -433,8 +442,55 @@ void loop()
       estadoActual = MENU_ADMIN;
       pantalla.clear();
     }
+
+    if (tecla == '8')
+    {
+      pagina = (pagina % 2) +1;
+    }
     break;
+  }
   default:
     break;
+  }
+}
+
+void mostrarEstadosSistema(int pagina) 
+{
+  String cadena1 = "Celulares Ingresados: " + String(obtenerCantidadEstado(CELULARES));
+  String cadena2 = "Intentos Fallidos: " + String(obtenerCantidadEstado(INTENTOS_FALLIDOS));
+  String cadena3 = "Incidentes: " + String(obtenerCantidadEstado(INCIDENTES));
+  String cadena4 = "Usuarios Activos: " + String(obtenerCantidadEstado(USUARIOS_ACTIVOS));
+  Serial1.println(cadena1);
+  Serial1.println(cadena2);
+  Serial1.println(cadena3);
+  Serial1.println(cadena4);
+  Serial1.println("");
+
+  if (!enviado)
+  {
+    Serial.print(cadena1 + cadena2 + cadena3 + cadena4);
+    enviado = true;
+  }
+  if (pagina == 1) 
+  {
+    pantalla.clear();
+    pantalla.setCursor(0, 0);
+    pantalla.print("- Celulares");
+    pantalla.setCursor(0, 1);
+    pantalla.print("  ingresados: " + String(obtenerCantidadEstado(CELULARES)));
+    pantalla.setCursor(0, 2);
+    pantalla.print("- Intentos");
+    pantalla.setCursor(0, 3);
+    pantalla.print("  fallidos: " + String(obtenerCantidadEstado(INTENTOS_FALLIDOS)));
+  }
+  else if (pagina == 2)
+  {
+    pantalla.clear();
+    pantalla.setCursor(0, 0);
+    pantalla.print("- Incidentes: " + String(obtenerCantidadEstado(INCIDENTES)));
+    pantalla.setCursor(0, 2);
+    pantalla.print("- Usuarios");
+    pantalla.setCursor(0, 3);
+    pantalla.print("  activos: " + String(obtenerCantidadEstado(USUARIOS_ACTIVOS)));
   }
 }
