@@ -1,7 +1,8 @@
 #include "LedControl.h"
 #include <LiquidCrystal.h>
 //#include "loginRegistroPanel.h"
-#include "funcionalidadesUsuario.h"
+//#include "funcionalidadesUsuario.h"
+#include "mostrarLogs.h"
 #include "bluetooth.h"
 
 #define INICIALIZAR_TECLADO char tecla = ' '
@@ -115,24 +116,7 @@ INICIALIZAR_TECLADO;
 
 //------------------------------------------------------------------
 
-void pintarCadenaMayorHorizontal(String cadena)
-{
-  String varMostrar = "";
-  for (int j = 0; j < cadena.length(); j++) // recorre cadena
-    {
-      char caracter = cadena.charAt(j);
-      varMostrar = varMostrar + caracter;
 
-      if (varMostrar.length() > CASILLAS_PANTALLA)
-      {
-        varMostrar = varMostrar.substring(1);
-      }
-
-      pantalla.setCursor(0, 1);
-      pantalla.print(varMostrar);
-      delay(50);
-    }
-}
 
 void mostrarDatosIntegrantes()
 {
@@ -150,7 +134,7 @@ void mostrarDatosIntegrantes()
 
     varTemp = equipo[i];
 
-    pintarCadenaMayorHorizontal(varTemp);
+    pintarCadenaMayorHorizontal(pantalla, varTemp, 1, 16);
     delay(300);
 
     varTemp = "";
@@ -336,7 +320,7 @@ void loop()
     if (tecla == '1') //------------------------
     {
       pantalla.setCursor(0, 1);
-      pantalla.print("LOGS-STATE");
+      pantalla.print("VISTA-LOGS");
       delay(500);
       estadoActual = VISTA_LOGS;
       pantalla.clear();
@@ -411,19 +395,7 @@ void loop()
     break;
   case VISTA_LOGS: // estados menu administrador
     Serial1.println("VISTA_LOGS");
-    pantalla.setCursor(0, 0);
-    pantalla.print("LOGS...");
-
-    tecla = leerTecla();
-    delay(165);
-    if (tecla == '1') //------------------------
-    {
-      pantalla.setCursor(0, 1);
-      pantalla.print("VIENDO...");
-      delay(500);
-      estadoActual = MENU_ADMIN;
-      pantalla.clear();
-    }
+    enlistarLogs(pantalla);
     break;
   case ESTADO_SISTEMA:
   {
