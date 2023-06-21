@@ -54,7 +54,7 @@ enum EstadoMenu
   VISTA_LOGS,
   ESTADO_SISTEMA
 };
-EstadoMenu estadoActual = ESTADO_SISTEMA;
+EstadoMenu estadoActual = DATOS_INTEGRANTES;
 
 char leerTecla()
 {
@@ -200,8 +200,12 @@ void loop()
       //FUNCIONALIDAD DE INICIO SESION POR PANEL ()
       pantalla.clear();
       pantalla.setCursor(0, 0);
+      pantalla.print("PANEL...");
       memset(nombreUsuarioActivo, 0, 12);
-      memset(contraUsuarioActivo, 0, 12);  
+      memset(contraUsuarioActivo, 0, 12); 
+      delay(150); 
+      pantalla.clear();
+      pantalla.setCursor(0, 0);
       if(loginTeclado(pantalla, ledControl)){
         // guardamos credenciales
         memcpy(nombreUsuarioActivo, nombre_temp, 12);
@@ -214,7 +218,7 @@ void loop()
       }else{
         estadoActual = DATOS_INTEGRANTES; // fallo de 2 intentos en login
       }
-      delay(500);
+      delay(300);
       pantalla.clear();
     } else if (tecla == '2') //2 INICIO SESION POR APP
     { 
@@ -270,42 +274,58 @@ void loop()
     
     break;
   case MENU_USUARIO:
-    Serial.println("MENU_USUARIO");
+    //Serial1.println("MENU_USUARIO");
     pantalla.setCursor(0, 0);
     pantalla.print("MENU-USER...");
-
+    pantalla.setCursor(0, 1);
+    pantalla.print("1-IC 2-RT");
+    pantalla.setCursor(0, 2);
+    pantalla.print("3-CS 4-EC");
+    
     tecla = leerTecla();
     delay(165);
     if (tecla == '1') //------------------------1 INGRESO-CEL
     {
+      pantalla.clear();
+      pantalla.setCursor(0, 0);
+      pantalla.print("MENU-USER...");
       pantalla.setCursor(0, 1);
       pantalla.print("INGRESO-CEL");
-      delay(200);
+      delay(250);
       estadoActual = INGRESO_DISPOSITIVO;
       pantalla.clear();
     }
     else if (tecla == '2') //----------------2 RETIRO-CEL
     {
+      pantalla.clear();
+      pantalla.setCursor(0, 0);
+      pantalla.print("MENU-USER...");
       pantalla.setCursor(0, 1);
       pantalla.print("RETIRO-CEL");
 
-      delay(500);
+      delay(250);
       estadoActual = RETIRO_DISPOSITIVO;
       pantalla.clear();
     }
     else if (tecla == '3') //----------------3 CERRAR-SESION
     {
+      pantalla.clear();
+      pantalla.setCursor(0, 0);
+      pantalla.print("MENU-USER...");
       pantalla.setCursor(0, 1);
       pantalla.print("CERRAR-SESION");
-      delay(500);
+      delay(250);
       estadoActual = CERRAR_SESION;
       pantalla.clear();
     }
     else if (tecla == '4') //----------------4 ELIMINAR-USUARIO
     {
+      pantalla.clear();
+      pantalla.setCursor(0, 0);
+      pantalla.print("MENU-USER...");
       pantalla.setCursor(0, 1);
       pantalla.print("DELETE-CUENTA");
-      delay(500);
+      delay(250);
       estadoActual = ELMINAR_USUARIO;
       pantalla.clear();
     }
@@ -352,8 +372,12 @@ void loop()
   case INGRESO_DISPOSITIVO:
     Serial1.println("INGRESO_DISPOSITIVO");
     if(ingresarCelular(pantalla, ledControl, nombreUsuarioActivo, contraUsuarioActivo)){
+      pantalla.clear();
+      ledControl.clearDisplay(0); 
       estadoActual = MENU_USUARIO;
     }else{
+      pantalla.clear();
+      ledControl.clearDisplay(0); 
       estadoActual = MENU_PRINCIPAL;
     }
     
@@ -362,9 +386,13 @@ void loop()
     break;
   case RETIRO_DISPOSITIVO:
     if(retiroCelular(pantalla, ledControl, nombreUsuarioActivo, contraUsuarioActivo)){
+      pantalla.clear();
+      ledControl.clearDisplay(0); 
       estadoActual = MENU_USUARIO;
     }else{
-      estadoActual = MENU_PRINCIPAL;
+      pantalla.clear();
+      ledControl.clearDisplay(0); 
+      estadoActual = MENU_USUARIO;
     }
     
     break;
