@@ -239,7 +239,9 @@ void guardarCompartimiento(struct compartimiento cmp) {
 // posicion siempre debe de un solo digito, 0-8
 struct compartimiento buscarCompartimiento(char* posicion) {
     struct compartimiento cmp;
-    int pos = particion_compartimientos + (atoi(posicion)*sizeof(struct compartimiento));
+    int posN = posicion - '0';
+    //int pos = particion_compartimientos + (atoi(posicion)*sizeof(struct compartimiento));
+    int pos = particion_compartimientos + (posN*sizeof(struct compartimiento));
     EEPROM.get(pos, cmp);
 
     encriptar(cmp.posicion, sizeof(cmp.posicion), CLAVE2, CLAVE1);

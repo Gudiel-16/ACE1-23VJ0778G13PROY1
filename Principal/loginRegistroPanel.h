@@ -268,7 +268,8 @@ bool loginTeclado(LiquidCrystal pantalla, LedControl ledControl){
       char mylog[15];
       memset(mylog, 0, 15);
       memcpy(mylog, descripcion, 13);
-      guardarMemoriaLog(mylog);   
+      guardarMemoriaLog(mylog);
+      ledControl.clearDisplay(0);   
       return true;
     }else{
       // guardar log
@@ -594,6 +595,31 @@ void registrarAdmin(){
   memcpy(nuevo_usuario2.phone, telefono_temp, 8);
 
   guardarMemoriaUsuario(nuevo_usuario2);
+
+ //usuario quemado para pruebas
+  memset(nombre_temp, 0, tamanioNombreTemp);
+  memset(contra_temp, 0, tamanioContraTemp);   
+  memset(telefono_temp, 0,  tamanioTelefonoTemp); 
+  struct usuario nuevo_usuario3;
+  
+  nombre_temp[0] = 'b';
+
+  contra_temp[0] = '1';
+
+  telefono_temp[0] = '1';
+  telefono_temp[1] = '2';
+  telefono_temp[2] = '3';
+  telefono_temp[3] = '4';
+  telefono_temp[4] = '5';
+  telefono_temp[5] = '6';
+  telefono_temp[6] = '7';
+  telefono_temp[7] = '8';  
+
+  memcpy(nuevo_usuario3.nombre, nombre_temp, 12);
+  memcpy(nuevo_usuario3.password, contra_temp, 12);
+  memcpy(nuevo_usuario3.phone, telefono_temp, 8);
+
+  guardarMemoriaUsuario(nuevo_usuario3);
   
 }
 
